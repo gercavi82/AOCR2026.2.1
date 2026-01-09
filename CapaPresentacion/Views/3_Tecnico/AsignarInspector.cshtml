@@ -1,0 +1,116 @@
+﻿@model CapaModelo.SolicitudAOCR
+
+@{
+    ViewBag.Title = "Asignar Inspector";
+}
+
+<h2><i class="glyphicon glyphicon-user"></i> Asignar Inspector</h2>
+<hr />
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Información de la Solicitud</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Solicitud N°:</dt>
+            <dd>@ViewBag.SolicitudId</dd>
+            <dt>Operador:</dt>
+            <dd>@Model.NombreOperador</dd>
+            <dt>RUC:</dt>
+            <dd>@Model.RUC</dd>
+            <dt>Tipo de Operación:</dt>
+            <dd>@Model.TipoOperacion</dd>
+            <dt>Matrícula:</dt>
+            <dd>@Model.Matricula</dd>
+            <dt>Modelo:</dt>
+            <dd>@Model.Modelo</dd>
+        </dl>
+    </div>
+</div>
+
+@using (Html.BeginForm("AsignarInspector", "Tecnico", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="solicitudId" value="@ViewBag.SolicitudId" />
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Asignación de Inspectores</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Inspector Principal *</label>
+                <div class="col-md-9">
+                    <select name="inspectorPrincipal" class="form-control" required>
+                        <option value="">Seleccione un inspector...</option>
+                        @foreach (var inspector in ViewBag.Inspectores)
+                        {
+                            <option value="@inspector.Id">@inspector.NombreCompleto - @inspector.Especialidad</option>
+                        }
+                    </select>
+                    <p class="help-block">Inspector responsable de la inspección</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Inspector de Apoyo</label>
+                <div class="col-md-9">
+                    <select name="inspectorApoyo" class="form-control">
+                        <option value="">Seleccione un inspector (opcional)...</option>
+                        @foreach (var inspector in ViewBag.Inspectores)
+                        {
+                            <option value="@inspector.Id">@inspector.NombreCompleto - @inspector.Especialidad</option>
+                        }
+                    </select>
+                    <p class="help-block">Inspector de apoyo (opcional)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Fecha de Inspección</label>
+                <div class="col-md-9">
+                    <input type="date" name="fechaInspeccion" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Observaciones</label>
+                <div class="col-md-9">
+                    <textarea name="observaciones" class="form-control" rows="4" placeholder="Ingrese observaciones adicionales..."></textarea>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong><i class="glyphicon glyphicon-info-sign"></i> Nota:</strong>
+                Asegúrese de que los inspectores seleccionados estén disponibles en la fecha programada.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="glyphicon glyphicon-ok"></i> Asignar Inspector
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-lg">
+                <i class="glyphicon glyphicon-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function() {
+            $('select[name="inspectorPrincipal"]').change(function() {
+                var selectedValue = $(this).val();
+                $('select[name="inspectorApoyo"] option').prop('disabled', false);
+                if (selectedValue) {
+                    $('select[name="inspectorApoyo"] option[value="' + selectedValue + '"]').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+}

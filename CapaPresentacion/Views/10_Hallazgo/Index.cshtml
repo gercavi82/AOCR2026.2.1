@@ -1,0 +1,65 @@
+﻿@model IEnumerable<CapaModelo.Hallazgo>
+
+@{
+    ViewBag.Title = "Hallazgos de la Inspección";
+    int inspeccionId = ViewBag.InspeccionId;
+}
+
+<h2>Hallazgos</h2>
+
+<a href="@Url.Action("Crear", new { inspeccionId })" class="btn btn-success mb-3">
+    + Registrar nuevo hallazgo
+</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Severidad</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Detectado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var h in Model)
+        {
+            <tr>
+                <td>@h.Severidad</td>
+                <td>@h.Descripcion</td>
+                <td>
+                    <span class="label label-@(h.Estado == "RESUELTO" ? "success" : "warning")">
+                        @h.Estado
+                    </span>
+                </td>
+                <td>@h.FechaDeteccion?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a class="btn btn-info btn-sm"
+                       href="@Url.Action("Editar", new { id = h.CodigoHallazgo })">Editar</a>
+
+                    @if (h.Estado == "PENDIENTE")
+                    {
+                        <form action="@Url.Action("Cerrar")" method="post" style="display:inline;">
+                            @Html.Hidden("id", h.CodigoHallazgo)
+                            @Html.Hidden("inspeccionId", inspeccionId)
+                            <button class="btn btn-success btn-sm">Cerrar</button>
+                        </form>
+                    }
+
+                    <form action="@Url.Action("Eliminar")" method="post" style="display:inline;">
+                        @Html.Hidden("id", h.CodigoHallazgo)
+                        @Html.Hidden("inspeccionId", inspeccionId)
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Eliminar hallazgo?')">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Detalle", "Inspeccion", new { id = inspeccionId })" class="btn btn-default">
+    ← Volver a inspección
+</a>

@@ -1,0 +1,272 @@
+﻿@model CapaModelo.Informe
+@using CapaModelo
+
+@{
+    ViewBag.Title = "Ver Informe";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-file-alt"></i>
+                            @Model.Titulo
+                        </h4>
+                        <div>
+                            <button class="btn btn-light btn-sm" onclick="window.print()">
+                                <i class="fas fa-print"></i> Imprimir
+                            </button>
+
+                            <a class="btn btn-danger btn-sm"
+                               href="@Url.Action("DescargarPdf", "Informe", new { id = Model.CodigoInforme })">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </a>
+
+                            <a class="btn btn-success btn-sm"
+                               href="@Url.Action("ExportarExcel", "Informe", new { id = Model.CodigoInforme })">
+                                <i class="fas fa-file-excel"></i> Excel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body" id="contenidoInforme">
+                    @{
+                        var fechaGen = Model.FechaInforme ?? Model.CreatedAt ?? DateTime.Now;
+                        var usuarioGen = Model.CreatedBy;
+                        var codigoBase = Model.CodigoSolicitud;
+                        var tipo = string.IsNullOrWhiteSpace(Model.Tipo) ? "Auditoría" : Model.Tipo;
+                    }
+
+                    <!-- Encabezado del Informe -->
+                    <div class="text-center mb-4">
+                        <h2>INFORME</h2>
+                        <h4>@Model.Titulo</h4>
+                        <p class="text-muted">
+                            Fecha de Generación: @fechaGen.ToString("dd/MM/yyyy")
+                        </p>
+                    </div>
+
+                    <hr />
+
+                    <!-- Información General -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th width="40%">ID Informe:</th>
+                                    <td>@Model.CodigoInforme</td>
+                                </tr>
+                                <tr>
+                                    <th>Base (Solicitud/Checklist):</th>
+                                    <td>@(codigoBase.HasValue ? ("#" + codigoBase.Value) : "-")</td>
+                                </tr>
+                                <tr>
+                                    <th>Generado Por:</th>
+                                    <td>@(usuarioGen.HasValue ? ("Usuario #" + usuarioGen.Value) : "-")</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th width="40%">Fecha Generación:</th>
+                                    <td>@fechaGen.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                                <tr>
+                                    <th>Tipo:</th>
+                                    <td>
+                                        <span class="badge badge-info">@tipo</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Estado:</th>
+                                    <td>
+                                        <span class="badge badge-success">
+                                            @(string.IsNullOrWhiteSpace(Model.Estado) ? "Completado" : Model.Estado)
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Resumen Ejecutivo (estático de plantilla) -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="fas fa-chart-pie"></i> Resumen Ejecutivo
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card text-center bg-success text-white">
+                                    <div class="card-body">
+                                        <h3>85%</h3>
+                                        <p class="mb-0">Cumplimiento</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center bg-primary text-white">
+                                    <div class="card-body">
+                                        <h3>12</h3>
+                                        <p class="mb-0">Items Evaluados</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center bg-warning text-white">
+                                    <div class="card-body">
+                                        <h3>3</h3>
+                                        <p class="mb-0">Observaciones</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center bg-danger text-white">
+                                    <div class="card-body">
+                                        <h3>1</h3>
+                                        <p class="mb-0">No Conformidades</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenido del Informe -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="fas fa-file-alt"></i> Contenido del Informe
+                        </h5>
+
+                        <div class="text-justify">
+                            @if (!string.IsNullOrWhiteSpace(Model.Contenido))
+                            {
+                                @Html.Raw(Model.Contenido)
+                            }
+                            else if (!string.IsNullOrWhiteSpace(Model.Descripcion))
+                            {
+                                @Html.Raw(Model.Descripcion)
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sin contenido registrado.</span>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Resultados Detallados (plantilla) -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="fas fa-list-check"></i> Resultados Detallados
+                        </h5>
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Criterio Evaluado</th>
+                                    <th>Estado</th>
+                                    <th>Observación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Documentación de seguridad</td>
+                                    <td><span class="badge badge-success">Conforme</span></td>
+                                    <td>Documentación completa y actualizada</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Permisos de acceso</td>
+                                    <td><span class="badge badge-success">Conforme</span></td>
+                                    <td>Permisos correctamente asignados</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Logs del sistema</td>
+                                    <td><span class="badge badge-warning">Observación</span></td>
+                                    <td>Se requiere mayor frecuencia de revisión</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Respaldos de información</td>
+                                    <td><span class="badge badge-danger">No Conforme</span></td>
+                                    <td>Respaldos incompletos en el último mes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Conclusiones y Recomendaciones (plantilla) -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="fas fa-lightbulb"></i> Conclusiones y Recomendaciones
+                        </h5>
+                        <ol>
+                            <li class="mb-2">Se recomienda implementar un proceso automatizado de respaldos diarios.</li>
+                            <li class="mb-2">Establecer un calendario de revisión de logs con frecuencia semanal.</li>
+                            <li class="mb-2">Mantener la actualización de la documentación de seguridad.</li>
+                            <li class="mb-2">Realizar auditorías de seguimiento en 30 días.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Firmas -->
+                    <div class="row mt-5 pt-5">
+                        <div class="col-md-6 text-center">
+                            <div class="border-top pt-2">
+                                <strong>Elaborado por</strong><br />
+                                @(usuarioGen.HasValue ? ("Usuario #" + usuarioGen.Value) : "Usuario Auditor")<br />
+                                <small class="text-muted">@fechaGen.ToString("dd/MM/yyyy")</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="border-top pt-2">
+                                <strong>Revisado por</strong><br />
+                                Responsable de Calidad<br />
+                                <small class="text-muted">___/___/______</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("Index", "Informe")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </a>
+                        <div>
+                            <button class="btn btn-outline-info" type="button">
+                                <i class="fas fa-envelope"></i> Enviar por Email
+                            </button>
+                            <button class="btn btn-outline-warning" type="button">
+                                <i class="fas fa-share-alt"></i> Compartir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Si luego quieres impresión aislada del contenido:
+        function imprimirInforme() {
+            var contenido = document.getElementById('contenidoInforme').innerHTML;
+            var ventana = window.open('', '', 'height=600,width=800');
+            ventana.document.write('<html><head><title>Informe</title>');
+            ventana.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">');
+            ventana.document.write('</head><body>');
+            ventana.document.write(contenido);
+            ventana.document.write('</body></html>');
+            ventana.document.close();
+            ventana.print();
+        }
+    </script>
+}

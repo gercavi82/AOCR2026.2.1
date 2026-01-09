@@ -1,0 +1,100 @@
+﻿@model List<CapaModelo.Documento>
+
+@{
+    ViewBag.Title = "Documentos de la Solicitud AOCR";
+    Layout = "~/Views/Shared/_LayoutAOCR.cshtml";
+}
+
+<h2 class="mb-4">Documentos de la Solicitud AOCR (#@ViewBag.SolicitudId)</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success">@TempData["Exito"]</div>
+}
+
+<div class="mb-3">
+    <strong>Total:</strong> @ViewBag.Estadisticas.Total |
+    <strong>Pendientes:</strong> @ViewBag.Estadisticas.Pendientes |
+    <strong>Aprobados:</strong> @ViewBag.Estadisticas.Aprobados |
+    <strong>Rechazados:</strong> @ViewBag.Estadisticas.Rechazados |
+    <strong>Tamaño:</strong> @ViewBag.Estadisticas.TamanioTotal bytes
+</div>
+
+<div class="mb-3">
+    <label for="filtroTipo" class="form-label">Filtrar por tipo de documento:</label>
+    <select id="filtroTipo" class="form-select w-auto d-inline-block">
+        <option value="">-- Todos --</option>
+        <option value="BORRADOR_AOCR">Borrador AOCR</option>
+        <option value="Otro">Otros</option>
+    </select>
+</div>
+
+<table class="table table-bordered table-hover" id="tablaDocumentos">
+    <thead class="table-light">
+        <tr>
+            <th>Tipo</th>
+            <th>Archivo</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var doc in Model)
+            {
+                <tr data-tipo="@doc.TipoDocumento">
+                    <td>@doc.TipoDocumento</td>
+                    <td>@doc.NombreArchivo</td>
+                    <td>@doc.FechaSubida.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@doc.Estado</td>
+                    <td>
+                        <a href="@Url.Action("Descargar", "Documento", new { id = doc.CodigoDocumento })" class="btn btn-sm btn-primary">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+
+                        @if (doc.TipoDocumento == "BORRADOR_AOCR" && User.IsInRole("Inspector"))
+                        {
+                            <a href="@Url.Action("Editar", "Documento", new { id = doc.CodigoDocumento })" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center text-muted">No hay documentos disponibles.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Detalle", "SolicitudAOCR", new { id = ViewBag.SolicitudId })" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Volver
+</a>
+
+@section Scripts {
+    <script>
+        document.getElementById("filtroTipo").addEventListener("change", function () {
+            var tipoSeleccionado = this.value;
+            var filas = document.querySelectorAll("#tablaDocumentos tbody tr");
+
+            filas.forEach(function (fila) {
+                var tipo = fila.getAttribute("data-tipo");
+                if (!tipoSeleccionado || tipo === tipoSeleccionado || (tipoSeleccionado === "Otro" && tipo !== "BORRADOR_AOCR")) {
+                    fila.style.display = "";
+                } else {
+                    fila.style.display = "none";
+                }
+            });
+        });
+    </script>
+}

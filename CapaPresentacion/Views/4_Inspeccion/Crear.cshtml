@@ -1,0 +1,19 @@
+﻿@model CapaModelo.Inspeccion
+<h2>Programar Inspección</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.CodigoSolicitud)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Inspector)
+        @Html.TextBoxFor(m => m.Inspector, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FechaProgramada)
+        @Html.TextBoxFor(m => m.FechaProgramada, new { @class = "form-control", type = "date" })
+    </div>
+
+    <button class="btn btn-success">Programar</button>
+}

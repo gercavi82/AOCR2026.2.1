@@ -1,0 +1,125 @@
+﻿@model Informe
+@{
+    ViewData["Title"] = "Generar Informe";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-file-invoice"></i> Generar Nuevo Informe</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Crear" method="post">
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label asp-for="Titulo" class="form-label">Título del Informe *</label>
+                                <input asp-for="Titulo" class="form-control" required
+                                       placeholder="Ej: Informe de Auditoría Q4 2024" />
+                                <span asp-validation-for="Titulo" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="ChecklistId" class="form-label">Checklist Base *</label>
+                                <select asp-for="ChecklistId" class="form-select" required>
+                                    <option value="">Seleccione...</option>
+                                    @foreach (var checklist in ViewBag.Checklists)
+                                    {
+                                        <option value="@checklist.Id">@checklist.Titulo</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ChecklistId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UsuarioId" class="form-label">Generado Por *</label>
+                                <select asp-for="UsuarioId" class="form-select" required>
+                                    <option value="">Seleccione...</option>
+                                    @foreach (var usuario in ViewBag.Usuarios)
+                                    {
+                                        <option value="@usuario.Id">@usuario.Nombres @usuario.Apellidos</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tipo de Informe</label>
+                                <select class="form-select" name="TipoInforme">
+                                    <option value="Auditoria">Auditoría</option>
+                                    <option value="Revision">Revisión</option>
+                                    <option value="Evaluacion">Evaluación</option>
+                                    <option value="Seguimiento">Seguimiento</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Contenido" class="form-label">Contenido del Informe</label>
+                            <textarea asp-for="Contenido" class="form-control" rows="8"
+                                      placeholder="Escriba el contenido detallado del informe..."></textarea>
+                            <span asp-validation-for="Contenido" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Periodo de Evaluación</label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control" name="FechaInicio">
+                                    <span class="input-group-text">hasta</span>
+                                    <input type="date" class="form-control" name="FechaFin">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nivel de Cumplimiento</label>
+                                <select class="form-select" name="NivelCumplimiento">
+                                    <option value="Excelente">Excelente (90-100%)</option>
+                                    <option value="Bueno">Bueno (75-89%)</option>
+                                    <option value="Regular">Regular (60-74%)</option>
+                                    <option value="Deficiente">Deficiente (< 60%)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Observaciones y Recomendaciones</label>
+                            <textarea class="form-control" rows="4" name="Observaciones"
+                                      placeholder="Observaciones generales y recomendaciones..."></textarea>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            El informe se generará con la fecha actual y podrá ser descargado en formato PDF o Excel.
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <div>
+                                <button type="button" class="btn btn-outline-info me-2">
+                                    <i class="fas fa-eye"></i> Vista Previa
+                                </button>
+                                <button type="submit" class="btn btn-info">
+                                    <i class="fas fa-save"></i> Generar Informe
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Contenido');
+        CKEDITOR.replace('Observaciones');
+    </script>
+}

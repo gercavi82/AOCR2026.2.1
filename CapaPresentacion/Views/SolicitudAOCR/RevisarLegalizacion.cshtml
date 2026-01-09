@@ -1,0 +1,90 @@
+﻿@model List<CapaModelo.SolicitudAOCR>
+
+@{
+    ViewBag.Title = "Solicitudes para Legalización";
+    Layout = "~/Views/Shared/_LayoutAOCR.cshtml";
+}
+
+<h2 class="mb-4">Solicitudes pendientes de Legalización AOCR</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success">@TempData["Exito"]</div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Operador</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sol in Model)
+        {
+            <tr>
+                <td>@sol.CodigoSolicitud</td>
+                <td>@sol.NombreOperador</td>
+                <td>@sol.FechaSolicitud.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@sol.Estado</td>
+                <td>
+                    <a href="@Url.Action("Detalle", "SolicitudAOCR", new { id = sol.CodigoSolicitud })" class="btn btn-sm btn-info">
+                        <i class="fas fa-eye"></i> Ver
+                    </a>
+
+                    <button class="btn btn-sm btn-success"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalLegalizar"
+                            data-id="@sol.CodigoSolicitud">
+                        <i class="fas fa-check"></i> Legalizar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal para confirmar legalización -->
+<div class="modal fade" id="modalLegalizar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("Legalizar", "SolicitudAOCR")">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Legalización</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="solicitudIdLegalizar" />
+                    <div class="mb-3">
+                        <label for="observacionLegal" class="form-label">Observaciones (opcional)</label>
+                        <textarea name="observacionLegal" id="observacionLegal" class="form-control"></textarea>
+                    </div>
+                    <p>Confirme que desea legalizar esta solicitud.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Legalizar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var modalLegalizar = document.getElementById('modalLegalizar');
+        modalLegalizar.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            modalLegalizar.querySelector('#solicitudIdLegalizar').value = id;
+        });
+    </script>
+}

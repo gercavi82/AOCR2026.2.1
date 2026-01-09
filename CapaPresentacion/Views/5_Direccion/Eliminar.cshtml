@@ -1,0 +1,23 @@
+﻿@model CapaModelo.Direccion
+@{
+    ViewBag.Title = "Eliminar Dirección";
+}
+
+<h2 class="mt-3 text-danger">⚠️ Eliminar Dirección</h2>
+
+<p>¿Está seguro que desea eliminar esta dirección?</p>
+
+<table class="table table-bordered">
+    <tr><th>Calle</th><td>@Model.Calle</td></tr>
+    <tr><th>Ciudad</th><td>@Model.Ciudad</td></tr>
+    <tr><th>Provincia</th><td>@Model.Provincia</td></tr>
+    <tr><th>País</th><td>@Model.Pais</td></tr>
+</table>
+
+@using (Html.BeginForm("ConfirmarEliminar", "Direccion", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.CodigoDireccion)
+
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+}

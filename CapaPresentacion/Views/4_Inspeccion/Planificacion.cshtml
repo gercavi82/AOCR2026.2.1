@@ -1,0 +1,143 @@
+﻿@model CapaModelo.Inspeccion
+
+@{
+    ViewBag.Title = "Planificación de Inspección";
+}
+
+<h2><i class="glyphicon glyphicon-calendar"></i> Planificación de Inspección en Campo</h2>
+<hr />
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Información de la Inspección</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Inspección N°:</dt>
+            <dd>@Model.Id</dd>
+            <dt>Solicitud N°:</dt>
+            <dd>@Model.SolicitudId</dd>
+            <dt>Inspector Principal:</dt>
+            <dd>@Model.InspectorPrincipal</dd>
+            <dt>Inspector de Apoyo:</dt>
+            <dd>@Model.InspectorApoyo</dd>
+        </dl>
+    </div>
+</div>
+
+@using (Html.BeginForm("Planificacion", "Inspeccion", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Detalles de la Planificación</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Fecha de Inspección *</label>
+                <div class="col-md-9">
+                    <input type="date" name="fechaInspeccion" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Hora de Inicio *</label>
+                <div class="col-md-9">
+                    <input type="time" name="horaInicio" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Duración Estimada (horas) *</label>
+                <div class="col-md-9">
+                    <input type="number" name="duracionEstimada" class="form-control" min="1" max="24" value="4" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Ubicación *</label>
+                <div class="col-md-9">
+                    <input type="text" name="ubicacion" class="form-control" placeholder="Dirección completa del lugar de inspección" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Coordenadas GPS</label>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" name="latitud" class="form-control" placeholder="Latitud" />
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="longitud" class="form-control" placeholder="Longitud" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Tipo de Inspección *</label>
+                <div class="col-md-9">
+                    <select name="tipoInspeccion" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Inicial">Inicial</option>
+                        <option value="Renovacion">Renovación</option>
+                        <option value="Seguimiento">Seguimiento</option>
+                        <option value="Extraordinaria">Extraordinaria</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Alcance de la Inspección *</label>
+                <div class="col-md-9">
+                    <textarea name="alcance" class="form-control" rows="4" placeholder="Describa el alcance y objetivos de la inspección..." required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Equipos/Herramientas Necesarias</label>
+                <div class="col-md-9">
+                    <textarea name="equiposNecesarios" class="form-control" rows="3" placeholder="Liste los equipos y herramientas necesarias..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Contacto en Sitio</label>
+                <div class="col-md-9">
+                    <input type="text" name="contactoSitio" class="form-control" placeholder="Nombre del contacto" />
+                    <input type="tel" name="telefonoContacto" class="form-control" placeholder="Teléfono del contacto" style="margin-top: 10px;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Observaciones</label>
+                <div class="col-md-9">
+                    <textarea name="observaciones" class="form-control" rows="3" placeholder="Observaciones adicionales..."></textarea>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong><i class="glyphicon glyphicon-info-sign"></i> Nota:</strong>
+                Asegúrese de coordinar con el operador aéreo la disponibilidad de la aeronave y del personal necesario para la inspección.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="glyphicon glyphicon-ok"></i> Guardar Planificación
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-lg">
+                <i class="glyphicon glyphicon-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,85 @@
+﻿@model Checklist
+@{
+    ViewData["Title"] = "Editar Checklist";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fas fa-edit"></i> Editar Checklist</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Editar" method="post">
+                        <input asp-for="Id" type="hidden" />
+                        <input asp-for="FechaCreacion" type="hidden" />
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label asp-for="Titulo" class="form-label">Título del Checklist *</label>
+                                <input asp-for="Titulo" class="form-control" required />
+                                <span asp-validation-for="Titulo" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="UsuarioId" class="form-label">Usuario Responsable *</label>
+                                <select asp-for="UsuarioId" class="form-select" required>
+                                    <option value="">Seleccione...</option>
+                                    @foreach (var usuario in ViewBag.Usuarios)
+                                    {
+                                        <option value="@usuario.Id"
+                                                @(usuario.Id == Model.UsuarioId ? "selected" : "")>
+                                            @usuario.Nombres @usuario.Apellidos
+                                        </option>
+                                    }
+                                </select>
+                                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Fecha de Creación</label>
+                                <input type="text" class="form-control"
+                                       value="@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Estado</label>
+                                <div class="form-check mt-2">
+                                    <input asp-for="Activo" class="form-check-input" type="checkbox" />
+                                    <label asp-for="Activo" class="form-check-label">Checklist Activo</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Los cambios afectarán todos los informes relacionados con este checklist.
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save"></i> Actualizar Checklist
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

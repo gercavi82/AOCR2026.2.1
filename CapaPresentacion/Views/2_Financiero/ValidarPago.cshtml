@@ -1,0 +1,78 @@
+﻿@model CapaModelo.Pago
+
+@{
+    ViewBag.Title = "Validar Pago";
+}
+
+<h2><i class="glyphicon glyphicon-usd"></i> Validar Pago</h2>
+<hr />
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Información del Pago</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Solicitud N°:</dt>
+            <dd>@Model.SolicitudId</dd>
+            <dt>Operador:</dt>
+            <dd>@Model.NombreOperador</dd>
+            <dt>Monto:</dt>
+            <dd>$@Model.Monto.ToString("N2")</dd>
+            <dt>Fecha de Pago:</dt>
+            <dd>@Model.FechaPago.ToString("dd/MM/yyyy")</dd>
+            <dt>Número de Factura:</dt>
+            <dd>@Model.NumeroFactura</dd>
+        </dl>
+    </div>
+</div>
+
+@using (Html.BeginForm("ValidarPago", "Financiero", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Validación</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Monto Verificado</label>
+                <div class="col-md-9">
+                    <input type="number" name="monto" class="form-control" step="0.01" value="@Model.Monto" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Estado</label>
+                <div class="col-md-9">
+                    <label class="radio-inline">
+                        <input type="radio" name="aprobado" value="true" required /> Aprobado
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="aprobado" value="false" required /> Rechazado
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Observaciones</label>
+                <div class="col-md-9">
+                    <textarea name="observaciones" class="form-control" rows="4" placeholder="Ingrese observaciones si es necesario..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <button type="submit" class="btn btn-success btn-lg">
+                <i class="glyphicon glyphicon-ok"></i> Validar Pago
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-lg">
+                <i class="glyphicon glyphicon-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </div>
+}

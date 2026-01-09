@@ -1,0 +1,215 @@
+﻿@{
+    ViewData["Title"] = "Asignar Permisos";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-lock"></i> Asignar Permisos al Rol: @ViewBag.NombreRol
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" name="rolId" value="@ViewBag.RolId" />
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Seleccione los permisos que desea asignar a este rol.
+                        </div>
+
+                        <div class="row">
+                            <!-- Módulo Usuarios -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0"><i class="fas fa-users"></i> Módulo Usuarios</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="USUARIO_VER" id="perm1">
+                                            <label class="form-check-label" for="perm1">Ver Usuarios</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="USUARIO_CREAR" id="perm2">
+                                            <label class="form-check-label" for="perm2">Crear Usuarios</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="USUARIO_EDITAR" id="perm3">
+                                            <label class="form-check-label" for="perm3">Editar Usuarios</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="USUARIO_ELIMINAR" id="perm4">
+                                            <label class="form-check-label" for="perm4">Eliminar Usuarios</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Módulo Roles -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header bg-success text-white">
+                                        <h6 class="mb-0"><i class="fas fa-shield-alt"></i> Módulo Roles</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="ROL_VER" id="perm5">
+                                            <label class="form-check-label" for="perm5">Ver Roles</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="ROL_CREAR" id="perm6">
+                                            <label class="form-check-label" for="perm6">Crear Roles</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="ROL_EDITAR" id="perm7">
+                                            <label class="form-check-label" for="perm7">Editar Roles</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="ROL_ELIMINAR" id="perm8">
+                                            <label class="form-check-label" for="perm8">Eliminar Roles</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Módulo Checklists -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h6 class="mb-0"><i class="fas fa-tasks"></i> Módulo Checklists</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="CHECKLIST_VER" id="perm9">
+                                            <label class="form-check-label" for="perm9">Ver Checklists</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="CHECKLIST_CREAR" id="perm10">
+                                            <label class="form-check-label" for="perm10">Crear Checklists</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="CHECKLIST_EDITAR" id="perm11">
+                                            <label class="form-check-label" for="perm11">Editar Checklists</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="CHECKLIST_ELIMINAR" id="perm12">
+                                            <label class="form-check-label" for="perm12">Eliminar Checklists</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Módulo Informes -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header bg-info text-white">
+                                        <h6 class="mb-0"><i class="fas fa-file-alt"></i> Módulo Informes</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="INFORME_VER" id="perm13">
+                                            <label class="form-check-label" for="perm13">Ver Informes</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="INFORME_CREAR" id="perm14">
+                                            <label class="form-check-label" for="perm14">Generar Informes</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="INFORME_ELIMINAR" id="perm15">
+                                            <label class="form-check-label" for="perm15">Eliminar Informes</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Módulo Parámetros -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header bg-secondary text-white">
+                                        <h6 class="mb-0"><i class="fas fa-cog"></i> Módulo Parámetros</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="PARAMETRO_VER" id="perm16">
+                                            <label class="form-check-label" for="perm16">Ver Parámetros</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="PARAMETRO_EDITAR" id="perm17">
+                                            <label class="form-check-label" for="perm17">Editar Parámetros</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Módulo Logs -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header bg-dark text-white">
+                                        <h6 class="mb-0"><i class="fas fa-history"></i> Módulo Logs</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="LOG_VER" id="perm18">
+                                            <label class="form-check-label" for="perm18">Ver Logs</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="permisos"
+                                                   value="LOG_LIMPIAR" id="perm19">
+                                            <label class="form-check-label" for="perm19">Limpiar Logs</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-info">
+                                <i class="fas fa-save"></i> Guardar Permisos
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Seleccionar/Deseleccionar todos en un módulo
+            $('.card-header').on('click', function() {
+                var card = $(this).closest('.card');
+                var checkboxes = card.find('input[type="checkbox"]');
+                var allChecked = checkboxes.filter(':checked').length === checkboxes.length;
+                checkboxes.prop('checked', !allChecked);
+            });
+        });
+    </script>
+}

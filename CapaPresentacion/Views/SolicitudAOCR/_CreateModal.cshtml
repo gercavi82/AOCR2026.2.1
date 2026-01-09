@@ -1,0 +1,126 @@
+﻿@model CapaPresentacion.Models.SolicitudAOCRViewModel
+
+@using (Html.BeginForm("Create", "SolicitudAOCR", FormMethod.Post, new { id = "formAOCR", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container-fluid p-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h5 class="text-info border-bottom pb-2 font-weight-bold">
+                    <i class="bi bi-person-badge-fill mr-2"></i> Información del Operador
+                </h5>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="small font-weight-bold">Nombre del Operador</label>
+                @Html.TextBoxFor(m => m.Solicitud.NombreOperador, new { @class = "form-control input-futurista", placeholder = "Ej. LATAM Airlines" })
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="small font-weight-bold">RUC</label>
+                @Html.TextBoxFor(m => m.Solicitud.Ruc, new { @class = "form-control input-futurista", placeholder = "17XXXXXXXX001" })
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="small font-weight-bold">Tipo de Solicitud</label>
+                @Html.DropDownListFor(m => m.Solicitud.TipoSolicitud, new SelectList(new[] { "EMISIÓN", "RENOVACIÓN", "MODIFICACIÓN" }), "-- Seleccione --", new { @class = "form-control input-futurista" })
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h5 class="text-teal border-bottom pb-2 font-weight-bold" style="color: #0c7c86;">
+                    <i class="bi bi-airplane-fill mr-2"></i> Registro de Aeronaves
+                </h5>
+                <table class="table table-sm table-borderless bg-white shadow-sm" style="border-radius: 8px;">
+                    <thead class="bg-light">
+                        <tr class="small text-muted">
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Matrícula</th>
+                            <th>Configuración</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input name="Aeronaves[0].Marca" class="form-control form-control-sm border-0 bg-light" /></td>
+                            <td><input name="Aeronaves[0].Modelo" class="form-control form-control-sm border-0 bg-light" /></td>
+                            <td><input name="Aeronaves[0].Matricula" class="form-control form-control-sm border-0 bg-light" /></td>
+                            <td><input name="Aeronaves[0].Configuracion" class="form-control form-control-sm border-0 bg-light" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h5 class="text-warning border-bottom pb-2 font-weight-bold">
+                    <i class="bi bi-cloud-upload-fill mr-2"></i> Documentación de Respaldo
+                </h5>
+                <div class="custom-file">
+                    <input type="file" name="ArchivosSubidos" class="custom-file-input" id="archivos" multiple>
+                    <label class="custom-file-label border-dashed text-center py-4 h-auto" for="archivos">
+                        <i class="bi bi-file-earmark-arrow-up h3 d-block"></i>
+                        Arrastre sus documentos PDF aquí o haga clic para seleccionar
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-right mt-4 pt-3 border-top">
+            <button type="button" class="btn btn-secondary rounded-pill px-4 mr-2" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary rounded-pill px-5 shadow">
+                <i class="bi bi-send-check-fill mr-1"></i> GUARDAR SOLICITUD
+            </button>
+        </div>
+    </div>
+}
+
+<style>
+    /* Estilos para el input neón */
+    .input-futurista {
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+
+        .input-futurista:focus {
+            border-color: #00f2ff;
+            box-shadow: 0 0 8px rgba(0, 242, 255, 0.2);
+            background-color: #fff;
+        }
+
+    .border-dashed {
+        border: 2px dashed #cbd5e1;
+        background: #f1f5f9;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    // Mostrar nombres de archivos seleccionados
+    $('.custom-file-input').on('change', function () {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName || "Seleccionar archivos");
+    });
+
+    // Manejo del POST vía AJAX para evitar recargar toda la página
+    $("#formAOCR").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.success) {
+                    $('#modalFormulario').modal('hide');
+                    location.reload(); // Recarga el tablero para ver la nueva solicitud
+                }
+            }
+        });
+    });
+</script>

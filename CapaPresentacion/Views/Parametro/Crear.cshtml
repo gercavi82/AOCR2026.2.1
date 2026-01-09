@@ -1,0 +1,95 @@
+﻿@model Parametro
+@{
+    ViewData["Title"] = "Crear Parámetro";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0"><i class="fas fa-plus-circle"></i> Crear Nuevo Parámetro</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Crear" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Clave" class="form-label">Clave del Parámetro *</label>
+                            <input asp-for="Clave" class="form-control" required
+                                   placeholder="Ej: MAX_INTENTOS_LOGIN" style="text-transform: uppercase;" />
+                            <small class="form-text text-muted">Use mayúsculas y guiones bajos</small>
+                            <span asp-validation-for="Clave" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Valor" class="form-label">Valor *</label>
+                            <input asp-for="Valor" class="form-control" required
+                                   placeholder="Valor del parámetro" />
+                            <span asp-validation-for="Valor" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="3"
+                                      placeholder="Descripción del parámetro y su uso"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Categoría</label>
+                                <select class="form-select" name="Categoria">
+                                    <option value="General">General</option>
+                                    <option value="Seguridad">Seguridad</option>
+                                    <option value="Notificaciones">Notificaciones</option>
+                                    <option value="Sistema">Sistema</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tipo de Dato</label>
+                                <select class="form-select" name="TipoDato">
+                                    <option value="String">Texto</option>
+                                    <option value="Number">Número</option>
+                                    <option value="Boolean">Booleano</option>
+                                    <option value="Date">Fecha</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="EsEditable" checked>
+                                <label class="form-check-label">Parámetro Editable</label>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Los parámetros del sistema son sensibles. Asegúrese de documentar correctamente su uso.
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-secondary">
+                                <i class="fas fa-save"></i> Guardar Parámetro
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Convertir clave a mayúsculas automáticamente
+        $('input[name="Clave"]').on('input', function() {
+            $(this).val($(this).val().toUpperCase().replace(/\s+/g, '_'));
+        });
+    </script>
+}

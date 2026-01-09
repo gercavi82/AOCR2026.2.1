@@ -1,0 +1,36 @@
+﻿@model IEnumerable<CapaModelo.Inspeccion>
+
+<h2>Inspecciones</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Solicitud</th>
+            <th>Inspector</th>
+            <th>Fecha Programada</th>
+            <th>Estado</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td>@i.CodigoSolicitud</td>
+                <td>@i.Inspector</td>
+                <td>@i.FechaProgramada.ToShortDateString()</td>
+                <td>
+                    <span class="label label-@(i.Estado == \"FINALIZADA\" ? \"success\" :
+                                              i.Estado == \"EN_INSPECCION\" ? \"info\" : \"warning\")">
+                        @i.Estado
+                    </span>
+                </td>
+                <td>
+                    <a href="@Url.Action(\"Detalle\", new { id = i.CodigoInspeccion })" class="btn btn-info btn-sm">
+                        Ver
+                    </a>
+                </td>
+            </tr>
+                    }
+    </tbody>
+</table>

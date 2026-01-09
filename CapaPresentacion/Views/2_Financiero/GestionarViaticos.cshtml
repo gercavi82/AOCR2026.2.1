@@ -1,0 +1,73 @@
+﻿@model CapaModelo.Inspeccion
+
+@{
+    ViewBag.Title = "Gestionar Viáticos";
+}
+
+<h2><i class="glyphicon glyphicon-briefcase"></i> Gestionar Viáticos</h2>
+<hr />
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Información de la Inspección</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Solicitud N°:</dt>
+            <dd>@Model.SolicitudId</dd>
+            <dt>Inspector Principal:</dt>
+            <dd>@Model.InspectorPrincipal</dd>
+            <dt>Inspector de Apoyo:</dt>
+            <dd>@Model.InspectorApoyo</dd>
+            <dt>Fecha Programada:</dt>
+            <dd>@Model.FechaInspeccion.ToString("dd/MM/yyyy")</dd>
+            <dt>Ubicación:</dt>
+            <dd>@Model.Ubicacion</dd>
+        </dl>
+    </div>
+</div>
+
+@using (Html.BeginForm("GestionarViaticos", "Financiero", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Asignación de Viáticos</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Monto de Viáticos</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="number" name="montoViaticos" class="form-control" step="0.01" placeholder="0.00" required />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Justificación</label>
+                <div class="col-md-9">
+                    <textarea name="justificacion" class="form-control" rows="4" placeholder="Detalle los gastos de transporte, alimentación, hospedaje, etc." required></textarea>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>Nota:</strong> Los viáticos se asignan según el reglamento interno y la ubicación de la inspección.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="glyphicon glyphicon-ok"></i> Asignar Viáticos
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-lg">
+                <i class="glyphicon glyphicon-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </div>
+}

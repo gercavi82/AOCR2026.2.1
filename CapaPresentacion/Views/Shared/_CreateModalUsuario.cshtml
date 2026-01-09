@@ -1,0 +1,81 @@
+﻿@model CapaPresentacion.Models.UsuarioCreateViewModel
+
+<div class="modal fade" id="modalCrearUsuario" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="formCrearUsuario">
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Usuario</h5>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="Email">Correo</label>
+                        <input type="email" id="Email" class="form-control" name="Usuario.Email" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NombreUsuario">Nombres</label>
+                        <input type="text" id="NombreUsuario" class="form-control" name="Usuario.NombreUsuario" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ApellidoUsuario">Apellidos</label>
+                        <input type="text" id="ApellidoUsuario" class="form-control" name="Usuario.ApellidoUsuario" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RolSeleccionado">Rol</label>
+                        <select id="RolSeleccionado" class="form-control" name="RolSeleccionado" required>
+                            <option value="">--Seleccione Rol--</option>
+                            @foreach (var r in Model.RolesDisponibles)
+                            {
+                                <option value="@r.CodigoRol">@r.Descripcion</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+    $(document).ready(function(){
+        $("#formCrearUsuario").submit(function(e){
+            e.preventDefault();
+
+            var data = $(this).serialize();
+
+            $.ajax({
+                url: '@Url.Action("Create", "Usuario")',
+                type: 'POST',
+                data: data,
+                success: function(res){
+                    if(res.success){
+                        $("#modalCrearUsuario").modal('hide');
+                        alert("Usuario creado con éxito!");
+                        // refrescar la tabla de usuarios si aplica
+                    } else {
+                        alert("Error al crear usuario: " + res.message);
+                    }
+                },
+                error: function(xhr){
+                    alert("Error de servidor");
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+    </script>
+}

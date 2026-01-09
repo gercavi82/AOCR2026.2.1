@@ -1,0 +1,57 @@
+﻿@model CapaModelo.Documento
+
+@{
+                /**/
+
+                ViewBag.Title = "Subir Borrador AOCR";
+                Layout = "~/Views/Shared/_LayoutAOCR.cshtml";
+}
+
+<h2 class="mb-4">Subir Borrador de Certificado AOCR</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success">@TempData["Exito"]</div>
+}
+
+@using (Html.BeginForm("Subir", "Documento", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.CodigoSolicitud)
+
+    <div class="mb-3">
+        <label for="tipoDocumento" class="form-label">Tipo de Documento</label>
+        @Html.DropDownList("tipoDocumento",
+            new SelectList(new[] {
+                new { Value = "BORRADOR_AOCR", Text = "Borrador de Certificado AOCR" }
+            }, "Value", "Text", "BORRADOR_AOCR"),
+            new { @class = "form-control", @disabled = "disabled" })
+
+        <!-- Campo oculto para que el valor llegue al POST -->
+        <input type="hidden" name="tipoDocumento" value="BORRADOR_AOCR" />
+    </div>
+
+
+
+    <div class="mb-3">
+        <label for="archivo" class="form-label">Archivo</label>
+        <input type="file" name="archivo" id="archivo" class="form-control" required />
+        <small class="form-text text-muted">Formatos permitidos: .pdf, .jpg, .png, .doc, .docx, .zip. Máx: 10 MB</small>
+    </div>
+
+    <div class="mb-3">
+        <label for="observaciones" class="form-label">Observaciones</label>
+        <textarea name="observaciones" class="form-control" rows="3" placeholder="Opcional">@Model.Observaciones</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-upload"></i> Subir Documento
+    </button>
+    <a href="@Url.Action("Detalle", "SolicitudAOCR", new { id = Model.CodigoSolicitud })" class="btn btn-secondary ms-2">
+        Cancelar
+    </a>
+}

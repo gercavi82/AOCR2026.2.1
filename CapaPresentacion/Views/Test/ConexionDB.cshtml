@@ -1,0 +1,29 @@
+﻿<!-- Archivo: Views/Test/ConexionDB.cshtml -->
+@{
+    ViewBag.Title = "Prueba de Conexión";
+}
+
+<div class="container mt-5">
+    <h2>Prueba de Conexión a Base de Datos</h2>
+
+    @if (ViewBag.Estado == "success")
+    {
+        <div class="alert alert-success">
+            <strong>@ViewBag.Mensaje</strong>
+        </div>
+    }
+    else if (ViewBag.Estado == "warning")
+    {
+        <div class="alert alert-warning">
+            <strong>@ViewBag.Mensaje</strong>
+        </div>
+    }
+    else if (ViewBag.Estado == "error")
+    {
+        <div class="alert alert-danger">
+            <strong>@ViewBag.Mensaje</strong>
+            <hr />
+            <pre>@ViewBag.Detalle</pre>
+        </div>
+    }
+</div>

@@ -1,0 +1,500 @@
+﻿/* Variables CSS */
+:root {
+    --dgac-teal: #0C7C86;
+    --dgac-blue: #1B4F72;
+    --dgac-cyan: #17a2b8;
+    --dgac-gray: #f5f7fa;
+    --dgac-dark: #1f2937;
+    --dgac-accent: #0ea5e9;
+    --dgac-light: #ffffff;
+    --transition-base: 0.3s ease;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
+    --shadow-md: 0 8px 18px rgba(0,0,0,.1);
+    --shadow-lg: 0 16px 28px rgba(0,0,0,.15);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--dgac-teal) 0%, var(--dgac-blue) 100%);
+    color: var(--dgac-light);
+    border-radius: 1.25rem;
+    padding: 3rem 2rem;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+    .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        z-index: 0;
+    }
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.35rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+
+.hero-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.hero-subtitle {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    opacity: 0.95;
+    margin-bottom: 0;
+}
+
+/* Badges */
+.badge-soft {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--dgac-light);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition-base);
+    backdrop-filter: blur(10px);
+}
+
+    .badge-soft:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+/* KPI Cards */
+.kpi {
+    background: var(--dgac-light);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    height: 100%;
+    transition: var(--transition-base);
+    border: 1px solid rgba(0,0,0,.05);
+}
+
+    .kpi:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+
+.kpi-icon {
+    font-size: 2.5rem;
+    color: var(--dgac-accent);
+    transition: var(--transition-base);
+}
+
+.kpi:hover .kpi-icon {
+    transform: scale(1.1);
+}
+
+.kpi-label {
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--dgac-dark);
+}
+
+.kpi-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Module Cards */
+.module-card {
+    border: 0;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-base);
+    height: 100%;
+    background: var(--dgac-light);
+}
+
+    .module-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+    }
+
+.module-card-head {
+    background: linear-gradient(135deg, var(--dgac-gray) 0%, #e8ecf1 100%);
+    padding: 1.25rem;
+    border-bottom: 2px solid var(--dgac-accent);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+    .module-card-head i {
+        font-size: 1.5rem;
+        color: var(--dgac-accent);
+    }
+
+    .module-card-head strong {
+        font-size: 1.1rem;
+        color: var(--dgac-dark);
+    }
+
+.module-card-body {
+    padding: 1.5rem;
+}
+
+.module-card-text {
+    color: #6b7280;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    min-height: 60px;
+}
+
+/* Timeline */
+.timeline-container {
+    background: var(--dgac-light);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    height: 100%;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 2.5rem;
+    margin-top: 1rem;
+}
+
+    .timeline::before {
+        content: "";
+        position: absolute;
+        left: 11px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--dgac-teal) 0%, var(--dgac-blue) 100%);
+        border-radius: 999px;
+    }
+
+.timeline-step {
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding-left: 0.5rem;
+}
+
+    .timeline-step::before {
+        content: "";
+        position: absolute;
+        left: -1.4rem;
+        top: 0.25rem;
+        width: 1rem;
+        height: 1rem;
+        background: var(--dgac-accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px var(--dgac-light), 0 0 0 6px var(--dgac-accent);
+        z-index: 1;
+    }
+
+    .timeline-step:last-child {
+        margin-bottom: 0;
+    }
+
+    .timeline-step strong {
+        color: var(--dgac-teal);
+        font-weight: 700;
+    }
+
+/* CTA Section */
+.cta-container {
+    background: linear-gradient(135deg, var(--dgac-light) 0%, var(--dgac-gray) 100%);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    height: 100%;
+    border: 2px solid rgba(12, 124, 134, 0.1);
+}
+
+.cta-title {
+    color: var(--dgac-dark);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cta-text {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-info {
+    padding-top: 1rem;
+    border-top: 2px solid rgba(0,0,0,.08);
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--dgac-teal) 0%, var(--dgac-blue) 100%);
+    border: none;
+    transition: var(--transition-base);
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(12, 124, 134, 0.3);
+    }
+
+.btn-outline-primary {
+    border-color: var(--dgac-teal);
+    color: var(--dgac-teal);
+    font-weight: 600;
+    transition: var(--transition-base);
+}
+
+    .btn-outline-primary:hover {
+        background: var(--dgac-teal);
+        border-color: var(--dgac-teal);
+        transform: translateY(-2px);
+    }
+
+.btn-outline-secondary {
+    border-color: #6b7280;
+    color: #6b7280;
+    font-weight: 600;
+    transition: var(--transition-base);
+}
+
+    .btn-outline-secondary:hover {
+        background: #6b7280;
+        border-color: #6b7280;
+        transform: translateY(-2px);
+    }
+
+/* Footer */
+.footer-note {
+    font-size: 0.9rem;
+    color: #64748b;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.footer-version {
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+/* Utilities */
+.text-soft {
+    color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero {
+        padding: 2rem 1.5rem;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+        .cta-buttons .btn {
+            width: 100%;
+        }
+
+    .kpi {
+        padding: 1.25rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+/* Contenedor principal del Sidebar */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: width 0.3s ease;
+    overflow-x: hidden; /* Evita que el texto deforme el ancho */
+}
+
+/* Ajuste para los enlaces del menú */
+.hover-link {
+    display: flex !important;
+    align-items: center;
+    white-space: nowrap; /* ✅ Evita que el texto se deforme hacia abajo */
+    overflow: hidden; /* ✅ Esconde el texto si el espacio es pequeño */
+    text-overflow: ellipsis; /* ✅ Agrega "..." si el texto es muy largo */
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+/* Control de iconos para que no se aplasten */
+.nav-group i,
+.sidebar i {
+    width: 25px;
+    text-align: center;
+    flex-shrink: 0; /* ✅ Impide que el icono pierda su forma */
+    margin-right: 10px;
+}
+
+/* Ajustes para pantallas pequeñas (Mobile/Tablet) */
+@media (max-width: 992px) {
+    .main-sidebar,
+    .main-sidebar::before {
+        width: 70px !important; /* Colapsa el sidebar automáticamente */
+    }
+
+    /* Esconde el texto y solo deja iconos centrados */
+    .hover-link span,
+    .nav-group .font-weight-bold,
+    .menu-container h6 {
+        display: none !important;
+    }
+
+    .sidebar {
+        padding: 10px !important;
+    }
+
+    .hover-link {
+        justify-content: center;
+    }
+    /* --- SIDEBAR: ESTILO Y DESAPARICIÓN TOTAL --- */
+
+    .main-sidebar {
+        width: 250px;
+        transition: margin-left 0.3s ease-in-out !important;
+    }
+
+    /* Estado cuando el usuario presiona la hamburguesa */
+    .sidebar-collapse .main-sidebar {
+        margin-left: -250px !important; /* Lo saca totalmente */
+    }
+
+    /* El contenido se expande al borde izquierdo */
+    .sidebar-collapse .content-wrapper,
+    .sidebar-collapse .main-header,
+    .sidebar-collapse .main-footer {
+        margin-left: 0 !important;
+    }
+
+    /* --- EVITAR DEFORMACIÓN DE TEXTO --- */
+    .hover-link {
+        display: flex !important;
+        align-items: center;
+        white-space: nowrap; /* No permite que el texto baje de línea */
+        overflow: hidden; /* Protege el diseño */
+        text-overflow: ellipsis; /* Agrega ... si el texto es muy largo */
+        padding: 8px 10px;
+    }
+
+        .hover-link i {
+            width: 25px;
+            text-align: center;
+            flex-shrink: 0; /* Iconos siempre circulares/cuadrados */
+            margin-right: 10px;
+        }
+
+        .hover-link span {
+            font-size: 0.85rem;
+        }
+
+    /* Transición para todos los elementos afectados */
+    .content-wrapper, .main-header, .main-footer {
+        transition: margin-left 0.3s ease-in-out !important;
+    }
+    /* Estilos para el Sidebar DGAC */
+    .hover-link {
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        padding: 5px 8px;
+        border-radius: 4px;
+    }
+
+        .hover-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #17a2b8 !important; /* Color info de Bootstrap */
+        }
+
+    /* Evita que el correo o nombres largos deformen el sidebar */
+    .truncate-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    /* Animación para los grupos */
+    .nav-group {
+        transition: transform 0.2s ease;
+    }
+
+    /* Cuando el sidebar de AdminLTE se colapsa */
+    .sidebar-collapse .group-title span,
+    .sidebar-collapse .section-title,
+    .sidebar-collapse .user-info,
+    .sidebar-collapse .hover-link span {
+        display: none !important;
+    }
+
+    .sidebar-collapse .hover-link i {
+        margin-right: 0 !important;
+        font-size: 1.2rem;
+    }
+}

@@ -1,0 +1,389 @@
+﻿@model CapaModelo.SolicitudAOCR
+
+@{
+    ViewBag.Title = "Emitir Certificado AOCR";
+}
+
+<h2><i class="glyphicon glyphicon-certificate"></i> Emisión del Certificado AOCR</h2>
+<hr />
+
+<div class="alert alert-success">
+    <h4><i class="glyphicon glyphicon-ok-sign"></i> ¡Certificado Listo para Emisión!</h4>
+    <p>Todos los procesos han sido completados exitosamente. El certificado está listo para ser emitido.</p>
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Información del Certificado</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Número de Certificado:</dt>
+            <dd><strong>AOCR-@DateTime.Now.Year-@Model.Id.ToString("D4")</strong></dd>
+            <dt>Operador:</dt>
+            <dd>@Model.NombreOperador</dd>
+            <dt>RUC:</dt>
+            <dd>@Model.RUC</dd>
+            <dt>Tipo de Operación:</dt>
+            <dd>@Model.TipoOperacion</dd>
+            <dt>Fecha de Emisión:</dt>
+            <dd>@DateTime.Now.ToString("dd/MM/yyyy")</dd>
+            <dt>Fecha de Vencimiento:</dt>
+            <dd>@DateTime.Now.AddYears(2).ToString("dd/MM/yyyy")</dd>
+            <dt>Estado:</dt>
+            <dd><span class="label label-success">Legalizado</span></dd>
+        </dl>
+    </div>
+</div>
+
+<!-- Certificado AOCR Final -->
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Certificado de Operador Aéreo - AOCR</h3>
+    </div>
+    <div class="panel-body" id="certificado-content" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 40px; border: 5px double #003366;">
+
+        <!-- Encabezado del Certificado -->
+        <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #003366; padding-bottom: 20px;">
+            <div style="display: inline-block; vertical-align: middle; margin-right: 20px;">
+                <img src="~/Content/images/escudo_ecuador.png" alt="Escudo Ecuador" style="width: 80px; height: auto;" />
+            </div>
+            <div style="display: inline-block; vertical-align: middle;">
+                <h2 style="margin: 0; color: #003366; font-weight: bold;">REPÚBLICA DEL ECUADOR</h2>
+                <h3 style="margin: 5px 0; color: #003366;">DIRECCIÓN GENERAL DE AVIACIÓN CIVIL</h3>
+                <h4 style="margin: 5px 0; color: #666;">Ministerio de Transporte y Obras Públicas</h4>
+            </div>
+        </div>
+
+        <!-- Título del Certificado -->
+        <div style="text-align: center; margin: 40px 0; background-color: #003366; padding: 20px; border-radius: 10px;">
+            <h1 style="color: white; margin: 0; font-size: 32px; letter-spacing: 2px;">CERTIFICADO DE OPERADOR AÉREO</h1>
+            <h3 style="color: #FFD700; margin: 10px 0; font-size: 24px;">(AIR OPERATOR CERTIFICATE - AOCR)</h3>
+        </div>
+
+        <!-- Número de Certificado -->
+        <div style="text-align: center; margin: 30px 0; padding: 15px; background-color: rgba(255, 215, 0, 0.2); border: 2px solid #FFD700; border-radius: 8px;">
+            <h3 style="margin: 0; color: #003366;">
+                <strong>CERTIFICADO N°: AOCR-@DateTime.Now.Year-@Model.Id.ToString("D4")</strong>
+            </h3>
+        </div>
+
+        <!-- Cuerpo del Certificado -->
+        <div style="margin: 40px 20px; line-height: 2; font-size: 16px; text-align: justify;">
+            <p style="text-indent: 50px;">
+                La <strong>Dirección General de Aviación Civil del Ecuador</strong>, en uso de las atribuciones que le confiere
+                la Ley de Aviación Civil y su Reglamento, y en cumplimiento de las normas establecidas en las Regulaciones
+                Aeronáuticas del Ecuador (RDAC) y los Anexos al Convenio sobre Aviación Civil Internacional (OACI),
+            </p>
+
+            <p style="text-align: center; margin: 30px 0; font-size: 20px; font-weight: bold; color: #003366;">
+                CERTIFICA QUE:
+            </p>
+
+            <!-- Información del Operador -->
+            <div style="background-color: white; padding: 25px; border-left: 5px solid #003366; margin: 30px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 10px; width: 40%; font-weight: bold; color: #003366;">OPERADOR AÉREO:</td>
+                        <td style="padding: 10px; font-size: 18px;"><strong>@Model.NombreOperador</strong></td>
+                    </tr>
+                    <tr style="background-color: #f9f9f9;">
+                        <td style="padding: 10px; font-weight: bold; color: #003366;">RUC:</td>
+                        <td style="padding: 10px;">@Model.RUC</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold; color: #003366;">DIRECCIÓN:</td>
+                        <td style="padding: 10px;">@Model.DireccionFisica</td>
+                    </tr>
+                    <tr style="background-color: #f9f9f9;">
+                        <td style="padding: 10px; font-weight: bold; color: #003366;">TELÉFONO:</td>
+                        <td style="padding: 10px;">@Model.Telefono</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold; color: #003366;">EMAIL:</td>
+                        <td style="padding: 10px;">@Model.Email</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p style="text-indent: 50px; margin-top: 30px;">
+                Ha cumplido satisfactoriamente con todos los requisitos técnicos, operacionales, administrativos y de seguridad
+                establecidos en la normativa aeronáutica vigente, y por lo tanto está <strong>AUTORIZADO</strong> para realizar
+                operaciones de aviación comercial en la categoría de:
+            </p>
+
+            <!-- Tipo de Operación -->
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(90deg, #003366 0%, #0066cc 100%); border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <h2 style="color: white; margin: 0; font-size: 28px; letter-spacing: 1px;">
+                    @Model.TipoOperacion.ToUpper()
+                </h2>
+            </div>
+
+            <!-- Aeronaves Autorizadas -->
+            <div style="background-color: white; padding: 25px; border: 2px solid #003366; margin: 30px 0; border-radius: 8px;">
+                <h4 style="color: #003366; margin-top: 0; border-bottom: 2px solid #003366; padding-bottom: 10px;">
+                    AERONAVE(S) AUTORIZADA(S):
+                </h4>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                    <thead>
+                        <tr style="background-color: #003366; color: white;">
+                            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">MATRÍCULA</th>
+                            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">MARCA/MODELO</th>
+                            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">N° SERIE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">@Model.Matricula</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">@Model.Modelo</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">@Model.NumeroSerie</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Vigencia -->
+            <div style="background-color: #fffacd; padding: 20px; border-left: 5px solid #FFD700; margin: 30px 0;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 50%; padding: 10px;">
+                            <strong style="color: #003366;">FECHA DE EMISIÓN:</strong><br />
+                            <span style="font-size: 18px;">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                        </td>
+                        <td style="width: 50%; padding: 10px;">
+                            <strong style="color: #003366;">FECHA DE VENCIMIENTO:</strong><br />
+                            <span style="font-size: 18px; color: #d9534f;">@DateTime.Now.AddYears(2).ToString("dd/MM/yyyy")</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Condiciones -->
+            <div style="margin: 30px 0; padding: 20px; background-color: #f0f8ff; border: 1px solid #4682b4; border-radius: 5px;">
+                <h4 style="color: #003366; margin-top: 0;">CONDICIONES Y LIMITACIONES:</h4>
+                <ul style="line-height: 1.8;">
+                    <li>Este certificado es válido únicamente para las operaciones especificadas.</li>
+                    <li>El operador debe mantener vigentes todos los documentos técnicos y operacionales.</li>
+                    <li>Sujeto a inspecciones periódicas por parte de la autoridad aeronáutica.</li>
+                    <li>Debe notificar cualquier cambio en las operaciones dentro de los 30 días.</li>
+                    <li>El incumplimiento de las normas puede resultar en la suspensión o revocación del certificado.</li>
+                </ul>
+            </div>
+
+            <p style="text-indent: 50px; margin-top: 30px;">
+                Este certificado se expide en cumplimiento de las disposiciones legales y reglamentarias vigentes,
+                y tiene validez en todo el territorio nacional e internacional conforme a los acuerdos suscritos por
+                la República del Ecuador.
+            </p>
+        </div>
+
+        <!-- Firma y Sello -->
+        <div style="margin-top: 60px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-size: 14px; color: #666;">
+                    Dado en la ciudad de Quito, Distrito Metropolitano, a los @DateTime.Now.Day días del mes de
+                    @DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("es-ES")) de @DateTime.Now.Year
+                </p>
+            </div>
+
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-md-6" style="text-align: center; padding: 20px;">
+                    <div style="margin-bottom: 60px; border-top: 2px solid #003366; display: inline-block; padding-top: 10px; min-width: 250px;">
+                        <p style="margin: 5px 0; font-weight: bold; color: #003366;">@ViewBag.NombreDirector</p>
+                        <p style="margin: 5px 0; font-size: 14px;">DIRECTOR GENERAL DE AVIACIÓN CIVIL</p>
+                    </div>
+                </div>
+                <div class="col-md-6" style="text-align: center; padding: 20px;">
+                    <div style="border: 3px solid #003366; border-radius: 50%; width: 150px; height: 150px; margin: 0 auto; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 51, 102, 0.1);">
+                        <div style="text-align: center;">
+                            <p style="margin: 0; font-weight: bold; color: #003366; font-size: 12px;">SELLO OFICIAL</p>
+                            <p style="margin: 5px 0; font-size: 10px; color: #003366;">DGAC</p>
+                            <p style="margin: 0; font-size: 10px; color: #003366;">ECUADOR</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Código QR y Verificación -->
+        <div style="margin-top: 40px; padding: 20px; background-color: #f5f5f5; border-top: 3px solid #003366; text-align: center;">
+            <div class="row">
+                <div class="col-md-8">
+                    <p style="font-size: 12px; color: #666; text-align: left; margin: 0;">
+                        <strong>VERIFICACIÓN:</strong> Este certificado puede ser verificado en línea en:
+                        <a href="https://www.aviacioncivil.gob.ec/verificacion" style="color: #0066cc;">www.aviacioncivil.gob.ec/verificacion</a>
+                    </p>
+                    <p style="font-size: 11px; color: #999; text-align: left; margin: 5px 0 0 0;">
+                        Código de Verificación: <strong>@Guid.NewGuid().ToString().Substring(0, 8).ToUpper()</strong>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <div style="border: 2px solid #003366; padding: 10px; display: inline-block; background-color: white;">
+                        <img src="~/Content/images/qr_code.png" alt="QR Code" style="width: 80px; height: 80px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie de página -->
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #003366; text-align: center;">
+            <p style="font-size: 11px; color: #666; margin: 5px 0;">
+                Dirección General de Aviación Civil - Av. Amazonas N36-139 y Naciones Unidas, Quito - Ecuador
+            </p>
+            <p style="font-size: 11px; color: #666; margin: 5px 0;">
+                Teléfono: (593) 2-294-4336 | Email: info@aviacioncivil.gob.ec | www.aviacioncivil.gob.ec
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario de Emisión Final -->
+@using (Html.BeginForm("EmitirAOCR", "Direccion", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Confirmación de Emisión</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Nombre del Director *</label>
+                <div class="col-md-9">
+                    <input type="text" name="nombreDirector" class="form-control" placeholder="Nombre completo del Director" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Formato de Descarga</label>
+                <div class="col-md-9">
+                    <label class="radio-inline">
+                        <input type="radio" name="formato" value="pdf" checked /> PDF
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="formato" value="pdf_firmado" /> PDF con Firma Digital
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Enviar Notificación</label>
+                <div class="col-md-9">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="enviarEmail" value="true" checked /> Enviar por Email al Operador
+                    </label>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong><i class="glyphicon glyphicon-ok-sign"></i> Todo Listo!</strong>
+                El certificado será generado en formato PDF y estará disponible para descarga inmediata.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <button type="submit" class="btn btn-success btn-lg" style="padding: 15px 40px;">
+                <i class="glyphicon glyphicon-download-alt"></i> Emitir y Descargar Certificado
+            </button>
+            <button type="button" class="btn btn-info btn-lg" onclick="imprimirCertificado()">
+                <i class="glyphicon glyphicon-print"></i> Imprimir
+            </button>
+            <button type="button" class="btn btn-warning btn-lg" onclick="previsualizarPDF()">
+                <i class="glyphicon glyphicon-eye-open"></i> Vista Previa PDF
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-lg">
+                <i class="glyphicon glyphicon-home"></i> Ir al Inicio
+            </a>
+        </div>
+    </div>
+}
+
+<!-- Información Adicional -->
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Próximos Pasos</h3>
+    </div>
+    <div class="panel-body">
+        <ol>
+            <li><strong>Descarga del Certificado:</strong> El certificado será descargado automáticamente en formato PDF.</li>
+            <li><strong>Notificación al Operador:</strong> Se enviará una copia del certificado al email registrado.</li>
+            <li><strong>Registro en Base de Datos:</strong> El certificado quedará registrado en el sistema nacional.</li>
+            <li><strong>Publicación:</strong> El certificado será publicado en el portal web de la DGAC.</li>
+            <li><strong>Seguimiento:</strong> Se programarán inspecciones de seguimiento según el cronograma establecido.</li>
+        </ol>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        function imprimirCertificado() {
+            var contenido = document.getElementById('certificado-content');
+            var ventanaImpresion = window.open('', '', 'height=800,width=800');
+
+            ventanaImpresion.document.write('<html><head><title>Certificado AOCR</title>');
+            ventanaImpresion.document.write('<link rel="stylesheet" href="/Content/bootstrap.css">');
+            ventanaImpresion.document.write('</head><body>');
+            ventanaImpresion.document.write(contenido.innerHTML);
+            ventanaImpresion.document.write('</body></html>');
+
+            ventanaImpresion.document.close();
+            ventanaImpresion.print();
+        }
+
+        function previsualizarPDF() {
+            html2canvas(document.getElementById('certificado-content'), {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            }).then(function(canvas) {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210;
+                const pageHeight = 295;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                pdf.output('dataurlnewwindow');
+            });
+        }
+
+        // Confirmación antes de emitir
+        $('form').submit(function(e) {
+            if (!confirm('¿Está seguro de que desea emitir este certificado? Esta acción no se puede deshacer.')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+}
+
+<style>
+    @@media print {
+        .panel-heading, .form-horizontal, .btn, nav, footer {
+            display: none !important;
+        }
+
+        #certificado-content {
+            border: none !important;
+            box-shadow: none !important;
+        }
+    }
+</style>

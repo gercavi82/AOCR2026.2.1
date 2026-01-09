@@ -1,0 +1,370 @@
+﻿@{
+    ViewBag.Title = "Operador";
+    Layout = "~/Views/Shared/_LayoutAOCR.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/dgac-theme.css")" />
+
+    <style>
+        /* --- ESTILOS ESPECÍFICOS DE LA VISTA --- */
+        body {
+            background-color: #f4f7fa;
+        }
+
+        /* 1. BOTÓN "PERFECTO" (Blanco con Borde) */
+        .btn-white-perfect {
+            background-color: #ffffff;
+            color: var(--dgac-blue); /* Texto Azul */
+            border: 1px solid #d1d5db; /* Borde definido pero suave */
+            font-weight: 700; /* Letra negrita */
+            padding: 10px 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra sutil */
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+            .btn-white-perfect:hover, .btn-white-perfect[aria-expanded="true"] {
+                background-color: #ffffff;
+                border-color: var(--dgac-teal); /* Borde cambia a Teal al pasar mouse */
+                color: var(--dgac-teal); /* Texto cambia a Teal */
+                box-shadow: 0 4px 12px rgba(12, 124, 134, 0.15); /* Resplandor suave */
+                transform: translateY(-1px);
+            }
+
+        /* 2. Header Moderno */
+        .header-modern {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-image: radial-gradient(#eef2f5 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* 3. Tabla Ergonómica */
+        .table-container-responsive {
+            max-height: 650px;
+            overflow-y: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            background: white;
+        }
+
+        .table-dgac thead th {
+            background-color: var(--dgac-blue);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            padding: 16px 12px;
+            white-space: nowrap;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .table-dgac tbody td {
+            font-size: 0.9rem;
+            vertical-align: middle;
+            color: #555;
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .table-dgac tbody tr:hover {
+            background-color: #f8fbff;
+        }
+
+        /* 4. Filtros (Tabs) */
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .filter-tab.active, .filter-tab:hover {
+                background: var(--dgac-blue);
+                color: #fff;
+                border-color: var(--dgac-blue);
+                box-shadow: 0 4px 10px rgba(27, 79, 114, 0.2);
+            }
+
+        /* Badges y Utilidades */
+        .badge-pill-custom {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .bg-aprobado {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .bg-pendiente {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .bg-tramite {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .bg-observado {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .text-left {
+            text-align: left !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+    </style>
+}
+
+<div class="header-modern">
+    <div>
+        <h3 class="m-0 font-weight-bold text-dark">Tablero de Control</h3>
+        <p class="text-muted m-0 small">Gestión de Certificados AOCR</p>
+    </div>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-white-perfect dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-plus-lg text-info"></i> NUEVA SOLICITUD
+        </button>
+        <div class="dropdown-menu dropdown-menu-right border-0 shadow-lg p-2" style="border-radius:12px; min-width:240px;">
+            <h6 class="dropdown-header text-uppercase font-weight-bold text-muted mb-1" style="font-size: 0.75rem;">Seleccione Trámite</h6>
+            <a id="btnEmisionAOCR" class="dropdown-item rounded py-2" href="#">
+                <i class="bi bi-file-earmark-plus text-primary mr-2"></i> Emisión AOCR
+            </a>
+            <a class="dropdown-item rounded py-2" href="@Url.Action("Modificacion", "Operador")">
+                <i class="bi bi-pencil-square text-info mr-2"></i> Modificación
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item rounded py-2" href="/Ambitos/Formulario_Actualizacion?oidSol=-1">
+                <i class="bi bi-arrow-repeat text-warning mr-2"></i> Renovación
+            </a>
+        </div>
+    </div>
+</div>
+
+<section class="content pt-4 px-3">
+    <div class="container-fluid">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+            <div class="filter-tabs" id="filterContainer">
+                <div class="filter-tab active" data-filter="all">Todos</div>
+                <div class="filter-tab" data-filter="tramite"><i class="bi bi-hourglass-split mr-1"></i> En Trámite</div>
+                <div class="filter-tab" data-filter="aprobado"><i class="bi bi-check-circle mr-1"></i> Aprobados</div>
+                <div class="filter-tab" data-filter="observado"><i class="bi bi-exclamation-circle mr-1"></i> Observados</div>
+            </div>
+
+            <div class="input-group shadow-sm" style="width: 300px; border-radius: 20px; overflow: hidden; background: white;">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-white border-0 pl-3"><i class="bi bi-search text-muted"></i></span>
+                </div>
+                <input type="text" id="searchInput" class="form-control border-0" placeholder="Buscar solicitud...">
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+            <div class="card-body p-0">
+                <div class="table-container-responsive">
+                    <table id="tablaSolicitudes" class="table table-dgac mb-0 text-nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 60px;">ID</th>
+                                <th class="text-center">Fecha</th>
+                                <th class="text-center">Tipo</th>
+                                <th class="text-left pl-4">Compañía</th>
+                                <th class="text-left pl-4">Inspector</th>
+                                <th class="text-center">Estado Global</th>
+                                <th class="text-right pr-4">Viáticos</th>
+                                <th class="text-center" style="width: 80px;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTabla"></tbody>
+                    </table>
+
+                    <div id="loader" class="text-center py-5" style="display:none;">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 2.5rem; height: 2.5rem;"></div>
+                        <p class="text-muted small font-weight-bold">Cargando registros...</p>
+                    </div>
+                    <div id="noResults" class="text-center py-5 text-muted" style="display:none;">
+                        <i class="bi bi-search h3"></i>
+                        <p>No se encontraron resultados.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-top py-3">
+                <div class="row align-items-center">
+                    <div class="col-6 text-muted small">
+                        <i class="bi bi-info-circle mr-1"></i> Mostrando últimos registros
+                    </div>
+                    <div class="col-6 text-right">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm justify-content-end m-0">
+                                <li class="page-item disabled"><a class="page-link border-0 bg-light" href="#">Anterior</a></li>
+                                <li class="page-item active"><a class="page-link border-0 bg-primary" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link border-0 text-dark" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link border-0 bg-light" href="#">Siguiente</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div class="modal fade" id="modalFormulario" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document" style="max-width: 95%;">
+        <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 15px 50px rgba(0,0,0,0.3);">
+
+            <div class="modal-header py-3 px-4" style="background: linear-gradient(135deg, var(--dgac-blue), var(--dgac-teal)); color: white; border-radius: 12px 12px 0 0;">
+                <h5 class="modal-title font-weight-bold" style="font-size: 1.1rem;">
+                    <i class="bi bi-window-stack mr-2"></i> Gestión de Solicitud
+                </h5>
+                <button type="button" class="close text-white opacity-75 hover-opacity-100" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body bg-light p-0" id="contenidoModal" style="min-height: 550px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/Views/Operador_Index.js")" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // 1. DATOS SIMULADOS
+            var datosGlobales = [
+                { id: 105, fecha: '19/11/2025', tipo: 'EMISIÓN', comp: 'LATAM AIRLINES', insp: 'Juan Pérez', st: 'Aprobado', cat: 'aprobado', viat: 80.00 },
+                { id: 104, fecha: '18/11/2025', tipo: 'RENOVACIÓN', comp: 'AVIANCA S.A.', insp: 'Sin Asignar', st: 'Pendiente', cat: 'tramite', viat: 0.00 },
+                { id: 103, fecha: '15/11/2025', tipo: 'MODIFICACIÓN', comp: 'AEROREGIONAL', insp: 'Maria López', st: 'En Proceso', cat: 'tramite', viat: 120.50 },
+                { id: 102, fecha: '12/11/2025', tipo: 'EMISIÓN', comp: 'KLM ROYAL', insp: '--', st: 'Observado', cat: 'observado', viat: 0.00 },
+                { id: 101, fecha: '10/11/2025', tipo: 'EMISIÓN', comp: 'AMERICAN AIRLINES', insp: 'R. Diaz', st: 'Finalizado', cat: 'aprobado', viat: 200.00 }
+            ];
+
+            // Carga inicial
+            renderTable(datosGlobales);
+
+            // 2. FILTROS
+            $('.filter-tab').click(function() {
+                $('.filter-tab').removeClass('active');
+                $(this).addClass('active');
+                filtrarDatos();
+            });
+
+            $('#searchInput').on('keyup', function() { filtrarDatos(); });
+
+            function filtrarDatos() {
+                var filtro = $('.filter-tab.active').data('filter');
+                var texto = $('#searchInput').val().toLowerCase();
+
+                var resultados = datosGlobales.filter(function(item) {
+                    var matchEstado = (filtro === 'all') || (item.cat === filtro);
+                    var matchTexto = item.comp.toLowerCase().includes(texto) || item.id.toString().includes(texto);
+                    return matchEstado && matchTexto;
+                });
+                renderTable(resultados);
+            }
+
+            // 3. RENDERIZADO
+            function renderTable(datos) {
+                if (datos.length === 0) {
+                    $('#cuerpoTabla').empty();
+                    $('#noResults').show();
+                    return;
+                }
+                $('#noResults').hide();
+                var html = '';
+
+                $.each(datos, function (i, item) {
+                    var badgeClass = 'bg-tramite'; // Default azul claro
+                    if(item.cat === 'aprobado') badgeClass = 'bg-aprobado';
+                    if(item.cat === 'pendiente') badgeClass = 'bg-pendiente';
+                    if(item.cat === 'observado') badgeClass = 'bg-observado text-white';
+
+                    html += `<tr>
+                        <td class="text-center font-weight-bold text-primary">${item.id}</td>
+                        <td class="text-center">${item.fecha}</td>
+                        <td class="text-center"><span class="badge badge-light border text-muted font-weight-normal">${item.tipo}</span></td>
+                        <td class="text-left pl-4 font-weight-bold text-dark">${item.comp}</td>
+                        <td class="text-left pl-4 text-muted small">${item.insp}</td>
+                        <td class="text-center"><span class="badge-pill-custom ${badgeClass}">${item.st}</span></td>
+                        <td class="text-right pr-4 text-dark font-weight-bold" style="font-family:monospace;">$ ${item.viat.toFixed(2)}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-secondary rounded-circle" onclick="consultarSolicitud(${item.id})" title="Ver Detalle" style="width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center;">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                });
+                $('#cuerpoTabla').html(html);
+            }
+
+            // 4. CARGA DE FORMULARIO (AJAX)
+            $('#btnEmisionAOCR').on('click', function (e) {
+                e.preventDefault();
+                cargarFormulario(null);
+            });
+
+            window.consultarSolicitud = function (id) {
+                cargarFormulario(id);
+            }
+
+            function cargarFormulario(idSolicitud) {
+                $('#contenidoModal').html(`
+                    <div class="d-flex flex-column align-items-center justify-content-center h-100 py-5">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <h6 class="text-secondary font-weight-bold">Cargando formulario...</h6>
+                    </div>
+                `);
+                $('#modalFormulario').modal('show');
+
+                $.ajax({
+                    url: '@Url.Action("FormularioEmisionAOCR", "SolicitudAOCR")',
+                    type: 'GET',
+                    data: { oid: idSolicitud },
+                    success: function (data) { $('#contenidoModal').hide().html(data).fadeIn(200); },
+                    error: function () { $('#contenidoModal').html('<div class="alert alert-danger m-3">Error de conexión</div>'); }
+                });
+            }
+        });
+    </script>
+}

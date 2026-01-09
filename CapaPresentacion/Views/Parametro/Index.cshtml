@@ -1,0 +1,612 @@
+﻿@model List<Parametro>
+@{
+    ViewData["Title"] = "Gestión de Parámetros";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="fas fa-cog"></i> Gestión de Parámetros del Sistema</h2>
+            <p class="text-muted">Configuración de parámetros y variables del sistema</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Crear" class="btn btn-secondary btn-lg">
+                <i class="fas fa-plus"></i> Nuevo Parámetro
+            </a>
+        </div>
+    </div>
+
+    <!-- Tabs de Categorías -->
+    <ul class="nav nav-tabs mb-3" id="categoriaTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="general-tab" data-bs-toggle="tab"
+                    data-bs-target="#general" type="button" role="tab">
+                <i class="fas fa-sliders-h"></i> General
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="seguridad-tab" data-bs-toggle="tab"
+                    data-bs-target="#seguridad" type="button" role="tab">
+                <i class="fas fa-shield-alt"></i> Seguridad
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="notificaciones-tab" data-bs-toggle="tab"
+                    data-bs-target="#notificaciones" type="button" role="tab">
+                <i class="fas fa-bell"></i> Notificaciones
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="sistema-tab" data-bs-toggle="tab"
+                    data-bs-target="#sistema" type="button" role="tab">
+                <i class="fas fa-server"></i> Sistema
+            </button>
+        </li>
+    </ul>
+
+    <!-- Contenido de Tabs -->
+    <div class="tab-content" id="categoriaTabContent">
+        <!-- Tab General -->
+        <div class="tab-pane fade show active" id="general" role="tabpanel">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> Parámetros Generales</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="30%">Parámetro</th>
+                                    <th width="40%">Valor</th>
+                                    <th width="20%">Descripción</th>
+                                    <th width="10%">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>NOMBRE_SISTEMA</strong></td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm"
+                                               value="Sistema AOCR" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Nombre de la aplicación</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VERSION_SISTEMA</strong></td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm"
+                                               value="1.0.0" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Versión actual</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>EMPRESA_NOMBRE</strong></td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm"
+                                               value="Mi Empresa S.A." readonly>
+                                    </td>
+                                    <td><small class="text-muted">Nombre de la empresa</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TIMEZONE</strong></td>
+                                    <td>
+                                        <select class="form-select form-select-sm" disabled>
+                                            <option>America/Bogota</option>
+                                            <option>America/Mexico_City</option>
+                                            <option>America/Lima</option>
+                                        </select>
+                                    </td>
+                                    <td><small class="text-muted">Zona horaria</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IDIOMA_DEFAULT</strong></td>
+                                    <td>
+                                        <select class="form-select form-select-sm" disabled>
+                                            <option selected>Español</option>
+                                            <option>Inglés</option>
+                                            <option>Portugués</option>
+                                        </select>
+                                    </td>
+                                    <td><small class="text-muted">Idioma predeterminado</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Seguridad -->
+        <div class="tab-pane fade" id="seguridad" role="tabpanel">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="fas fa-shield-alt"></i> Parámetros de Seguridad</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="30%">Parámetro</th>
+                                    <th width="40%">Valor</th>
+                                    <th width="20%">Descripción</th>
+                                    <th width="10%">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>LONGITUD_MIN_PASSWORD</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="8" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Caracteres mínimos</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>INTENTOS_LOGIN_MAX</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="3" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Intentos antes de bloqueo</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TIEMPO_BLOQUEO_MINUTOS</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="15" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Duración del bloqueo</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>EXPIRACION_PASSWORD_DIAS</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="90" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Días para cambio obligatorio</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SESION_TIMEOUT_MINUTOS</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="30" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Tiempo de inactividad</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>REQUERIR_MAYUSCULAS</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Mayúsculas en contraseña</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>REQUERIR_NUMEROS</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Números en contraseña</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>REQUERIR_CARACTERES_ESPECIALES</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Símbolos en contraseña</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Notificaciones -->
+        <div class="tab-pane fade" id="notificaciones" role="tabpanel">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-bell"></i> Parámetros de Notificaciones</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="30%">Parámetro</th>
+                                    <th width="40%">Valor</th>
+                                    <th width="20%">Descripción</th>
+                                    <th width="10%">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>EMAIL_HABILITADO</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Envío de emails</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SMTP_HOST</strong></td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm"
+                                               value="smtp.gmail.com" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Servidor SMTP</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SMTP_PORT</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="587" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Puerto SMTP</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>EMAIL_FROM</strong></td>
+                                    <td>
+                                        <input type="email" class="form-control form-control-sm"
+                                               value="noreply@sistema.com" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Email remitente</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NOTIFICAR_NUEVOS_USUARIOS</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Notificar creación usuarios</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NOTIFICAR_CAMBIO_PASSWORD</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Notificar cambios contraseña</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Sistema -->
+        <div class="tab-pane fade" id="sistema" role="tabpanel">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-server"></i> Parámetros del Sistema</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="30%">Parámetro</th>
+                                    <th width="40%">Valor</th>
+                                    <th width="20%">Descripción</th>
+                                    <th width="10%">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>MODO_MANTENIMIENTO</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Activar mantenimiento</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>REGISTROS_POR_PAGINA</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="25" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Paginación</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DIAS_RETENCION_LOGS</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="90" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Días antes de limpiar logs</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>BACKUP_AUTOMATICO</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Respaldos automáticos</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>FRECUENCIA_BACKUP_HORAS</strong></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm"
+                                               value="24" readonly>
+                                    </td>
+                                    <td><small class="text-muted">Frecuencia de respaldos</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PERMITIR_REGISTRO_PUBLICO</strong></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" disabled>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">Registro sin invitación</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>LOG_NIVEL</strong></td>
+                                    <td>
+                                        <select class="form-select form-select-sm" disabled>
+                                            <option>DEBUG</option>
+                                            <option selected>INFO</option>
+                                            <option>WARNING</option>
+                                            <option>ERROR</option>
+                                        </select>
+                                    </td>
+                                    <td><small class="text-muted">Nivel de logging</small></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de Acción Global -->
+    <div class="card shadow mt-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button class="btn btn-success" id="btnGuardarTodo">
+                        <i class="fas fa-save"></i> Guardar Todos los Cambios
+                    </button>
+                    <button class="btn btn-secondary" id="btnRestaurar">
+                        <i class="fas fa-undo"></i> Restaurar Valores por Defecto
+                    </button>
+                </div>
+                <div>
+                    <button class="btn btn-info" id="btnExportar">
+                        <i class="fas fa-download"></i> Exportar Configuración
+                    </button>
+                    <button class="btn btn-warning" id="btnImportar">
+                        <i class="fas fa-upload"></i> Importar Configuración
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Habilitar edición
+            $(document).on('click', '.btn-warning', function() {
+                var row = $(this).closest('tr');
+                var input = row.find('input, select');
+
+                if (input.prop('readonly') || input.prop('disabled')) {
+                    input.prop('readonly', false).prop('disabled', false);
+                    $(this).html('<i class="fas fa-save"></i>').removeClass('btn-warning').addClass('btn-success');
+                } else {
+                    // Guardar cambios
+                    Swal.fire({
+                        title: 'Guardando...',
+                        text: 'Actualizando parámetro',
+                        icon: 'info',
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then(() => {
+                        input.prop('readonly', true).prop('disabled', true);
+                        $(this).html('<i class="fas fa-edit"></i>').removeClass('btn-success').addClass('btn-warning');
+                        Swal.fire('Guardado', 'Parámetro actualizado correctamente', 'success');
+                    });
+                }
+            });
+
+            // Guardar todo
+            $('#btnGuardarTodo').on('click', function() {
+                Swal.fire({
+                    title: '¿Guardar todos los cambios?',
+                    text: "Se aplicarán todas las modificaciones realizadas",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sí, guardar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('Guardado', 'Todos los parámetros han sido actualizados', 'success');
+                    }
+                });
+            });
+
+            // Restaurar valores
+            $('#btnRestaurar').on('click', function() {
+                Swal.fire({
+                    title: '¿Restaurar valores por defecto?',
+                    text: "Se perderán todas las configuraciones personalizadas",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sí, restaurar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            });
+
+            // Exportar configuración
+            $('#btnExportar').on('click', function() {
+                Swal.fire('Exportando...', 'Generando archivo de configuración', 'info');
+            });
+
+            // Importar configuración
+            $('#btnImportar').on('click', function() {
+                Swal.fire({
+                    title: 'Importar Configuración',
+                    html: '<input type="file" class="form-control" accept=".json,.xml">',
+                    showCancelButton: true,
+                    confirmButtonText: 'Importar',
+                    cancelButtonText: 'Cancelar'
+                });
+            });
+        });
+    </script>
+}

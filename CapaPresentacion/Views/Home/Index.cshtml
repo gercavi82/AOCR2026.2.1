@@ -1,0 +1,95 @@
+﻿@model CapaPresentacion.Models.DashboardViewModel
+
+@{
+    ViewBag.Title = "Inicio - Sistema AOCR";
+    Layout = "~/Views/Shared/_LayoutAOCR.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet"
+          href="@Url.Content("~/Content/css/dashboard.css")" />
+}
+
+<div class="container-fluid py-4">
+
+    <!-- HERO -->
+    <div class="hero-banner mb-4">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <img src="@Url.Content("~/Content/imganes/logo1.png")"
+                     class="hero-logo"
+                     alt="Logo DGAC" />
+            </div>
+            <div class="col">
+                <h2 class="mb-1 fw-bold">Bienvenido, @Model.NombreUsuario</h2>
+                <p class="mb-0">
+                    <i class="fas fa-user-shield me-2"></i>
+                    Perfil: <strong>@Model.RolUsuario</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPIS -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="kpi-card">
+                <p class="kpi-title">Pendientes</p>
+                <h3 class="kpi-value">@Model.SolicitudesPendientes</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="kpi-card" style="border-left-color:#3b82f6;">
+                <p class="kpi-title">En proceso</p>
+                <h3 class="kpi-value">@Model.TramitesEnCurso</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="kpi-card" style="border-left-color:#10b981;">
+                <p class="kpi-title">Avisos</p>
+                <h3 class="kpi-value">@Model.NotificacionesNuevas</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="kpi-card" style="border-left-color:#6c757d;">
+                <p class="kpi-title">Fecha</p>
+                <h3 class="kpi-value">@DateTime.Now.ToString("dd MMM yyyy")</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="card shadow-sm p-3">
+        <h5 class="text-muted mb-3">
+            <i class="fas fa-bolt me-2"></i> Acciones rápidas
+        </h5>
+
+        <div class="row">
+            @if (Model.MostrarModuloOperador)
+            {
+                <div class="col-md-3 mb-2">
+                    <button class="btn btn-dgac-primary text-white w-100"
+                            onclick="cargarFormulario(0)">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Crear Solicitud
+                    </button>
+                </div>
+            }
+
+            <div class="col-md-3 mb-2">
+                <a class="btn btn-outline-secondary w-100"
+                   href="@Url.Action("MisSolicitudes","SolicitudAOCR")">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Mis Solicitudes
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

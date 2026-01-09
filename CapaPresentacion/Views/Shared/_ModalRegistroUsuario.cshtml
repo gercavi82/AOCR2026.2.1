@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "_ModalRegistroUsuario";
+}
+
+<div class="modal fade" id="modalRegistroUsuario" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="crearForm" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header text-center">
+                    <div class="w-100">
+                        <img src="@Url.Content(" ~/Content/imganes/logo_header.png")" alt="Logo DGAC" style="height: 80px;" />
+                    </div>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Correo electrónico:<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="email" name="Correo" id="Correo" class="form-control form-control-sm" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Cédula/Pasaporte:<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" name="CedulaIdentificacion" id="CedulaIdentificacion"
+                                   class="form-control form-control-sm" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Empresa:<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <select id="Empresa" name="Empresa" class="form-control form-control-sm" required>
+                                <option value="">-- Seleccione una empresa --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Rol en la empresa:<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <select id="Rol" name="Rol" class="form-control form-control-sm" required>
+                                <option value="">-- Seleccione un Rol --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="otroRolContainer" style="display:none;">
+                        <label class="col-sm-4 col-form-label">
+                            Especifique el rol:<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" id="OtroRol" name="OtroRol"
+                                   class="form-control form-control-sm"
+                                   placeholder="Ingrese su rol personalizado" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <small>Campos con <span class="text-danger">*</span> son obligatorios.</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">
+                        <img src="@Url.Content(" ~/Content/imganes/cancel.png")" width="20" /> Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <img src="@Url.Content(" ~/Content/imganes/save.png")" width="20" /> Registrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function inicializarRolesDinamicos() {
+        const $roles = $('#Rol');
+        if ($roles.length && $roles.children('option').length <= 1) {
+            $.get('@Url.Action("ObtenerRoles", "UsuarioRol")', function (data) {
+                $roles.empty().append('<option value="">-- Seleccione un Rol --</option>');
+                $.each(data, function (i, item) {
+                    $roles.append($('<option>', { value: item.Value, text: item.Text }));
+                });
+            });
+
+            $roles.on('change', function () {
+                const texto = $(this).find("option:selected").text().toUpperCase();
+                $("#otroRolContainer").toggle(texto.includes("OTRO"));
+            });
+        }
+    }
+
+    function inicializarEmpresasAS400() {
+        const $empresas = $('#Empresa');
+        if ($empresas.length && $empresas.children('option').length <= 1) {
+            $.get('@Url.Action("ObtenerEmpresas", "Empresa")', function (data) {
+                $empresas.empty().append('<option value="">-- Seleccione una empresa --</option>');
+                $.each(data, function (i, item) {
+                    $empresas.append($('<option>', {
+                        value: item.Codigo,
+                        text: item.Nombre
+                    }));
+                });
+            });
+        }
+    }
+
+    $('#modalRegistroUsuario').on('shown.bs.modal', function () {
+        inicializarRolesDinamicos();
+        inicializarEmpresasAS400();
+    });
+
+    $('#crearForm').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '@Url.Action("RegistrarUsuario", "Usuario")',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                alert(res.message);
+                if (res.success) {
+                    $('#modalRegistroUsuario').modal('hide');
+                    $('#crearForm')[0].reset();
+                }
+            },
+            error: function () {
+                alert("Error al registrar usuario.");
+            }
+        });
+    });
+</script>

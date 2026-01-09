@@ -1,0 +1,55 @@
+﻿@model List<CapaModelo.HistorialEstado>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning">No hay historial registrado.</div>
+}
+else
+{
+    <ul class="timeline">
+        @foreach (var item in Model)
+        {
+            <li>
+                <div>
+                    <strong class="text-primary">@item.EstadoNuevo</strong>
+                    <div class="small text-muted">
+                        Cambio desde <strong>@item.EstadoAnterior</strong><br />
+                        Fecha: @item.FechaCambio?.ToString("yyyy-MM-dd HH:mm")<br />
+                        Usuario ID: @item.CodigoUsuario
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(item.Observaciones))
+                    {
+                        <div class="mt-1"><em>@item.Observaciones</em></div>
+                    }
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+<style>
+    .timeline {
+        list-style: none;
+        padding-left: 0;
+        border-left: 2px solid #ccc;
+        margin-left: 20px;
+    }
+
+        .timeline li {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+            .timeline li::before {
+                content: '';
+                position: absolute;
+                left: -10px;
+                top: 0;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background-color: #3498db;
+                border: 2px solid white;
+            }
+</style>

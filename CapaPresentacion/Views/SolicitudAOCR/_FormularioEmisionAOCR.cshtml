@@ -1,0 +1,797 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="row">
+    <!-- Menú de Pasos -->
+    <div class="col-md-3">
+        <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-explotador-list" data-toggle="list" href="#explotador" role="tab" aria-controls="explotador">
+                1. Explotador-Solicitante
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-aeronaves-list" data-toggle="list" href="#aeronaves" role="tab" aria-controls="aeronaves">
+                2. Información de las Aeronaves
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-operaciones-list" data-toggle="list" href="#operaciones" role="tab" aria-controls="operaciones">
+                3. Operaciones EAE en el Ecuador
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-comprobante-list" data-toggle="list" href="#comprobante" role="tab" aria-controls="comprobante">
+                4. Comprobante
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-anexos-list" data-toggle="list" href="#anexos" role="tab" aria-controls="anexos">
+                5. Anexos
+            </a>
+        </div>
+    </div>
+
+    <!-- Contenido de los pasos -->
+    <div class="col-md-9">
+        <div class="tab-content" id="nav-tabContent">
+
+            <!-- Paso 1: Explotador -->
+            <div class="tab-pane fade show active" id="explotador" role="tabpanel" aria-labelledby="list-explotador-list">
+                <h5 class="mb-3 font-weight-bold">Datos del Explotador-Solicitante</h5>
+                <div class="modal-body" id="contenidoModal">
+
+                    <div style="max-height: 50vh; overflow-y: auto; padding: 15px 10px 15px 10px;">
+                        <form id="formExplotador">
+
+                            <!-- Sección: Punto de Contacto en Ecuador (ahora primero) -->
+                            <h5 class="mb-3 font-weight-bold">Punto de Contacto en Ecuador</h5>
+
+                            <div class="form-group">
+                                <label for="nombreRepresentante">Nombre del Representante Legal</label>
+                                <input type="text" class="form-control" id="nombreRepresentante" placeholder="Ingrese nombre del representante">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rucRepresentante">RUC</label>
+                                <input type="text" class="form-control" id="rucRepresentante" placeholder="Ingrese RUC">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="direccionEcuador">Dirección en Ecuador</label>
+                                <input type="text" class="form-control" id="direccionEcuador" placeholder="Ingrese dirección en Ecuador">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="telefonoEcuador">Teléfono en Ecuador</label>
+                                <input type="text" class="form-control" id="telefonoEcuador" placeholder="Ingrese teléfono en Ecuador">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailEcuador">Email en Ecuador</label>
+                                <input type="email" class="form-control" id="emailEcuador" placeholder="Ingrese correo en Ecuador">
+                            </div>
+
+                            <hr class="my-4">
+
+                            <!-- 2) Selector de Compañías con botón para agregar -->
+                            <h5 class="mb-3 font-weight-bold">Seleccionar Compañía</h5>
+                            <div class="form-inline mb-3">
+                                <select id="selectorCompanias" class="form-control mr-2">
+                                    <!-- Opciones de ejemplo -->
+                                    <option value="" disabled selected>Seleccione una compañía</option>
+                                    <option value="Compania A">Compañía A</option>
+                                    <option value="Compania B">Compañía B</option>
+                                    <option value="Compania C">Compañía C</option>
+                                    <option value="Compania D">Compañía D</option>
+                                </select>
+                                <button type="button" class="btn btn-primary" onclick="agregarCompania()">Agregar</button>
+                            </div>
+
+                            <!-- Contenedor visual de badges -->
+                            <div id="companiasSeleccionadas" class="mb-4">
+                                <!-- Aquí se anexarán las badges -->
+                            </div>
+
+                            <hr class="my-4">
+
+                            <h5 class="mb-3 font-weight-bold">Datos de la Compañía</h5>
+
+                            <div class="form-group">
+                                <label for="nombreCompania">Nombre de la Compañía *</label>
+                                <input type="text" class="form-control" id="nombreCompania" placeholder="Ingrese nombre de la compañía">
+                                <small class="form-text text-muted">
+                                    ¿Los datos de la compañía no son correctos?
+                                    <a href="#" id="btnInformacionCompania" class="text-primary font-weight-bold">Click aquí</a>
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="direccionCompania">Dirección de la Compañía</label>
+                                <input type="text" class="form-control" id="direccionCompania" placeholder="Ingrese dirección de la compañía">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="telefonoCompania">Teléfono de la Compañía</label>
+                                <input type="text" class="form-control" id="telefonoCompania" placeholder="Ingrese teléfono de la compañía">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="correoCompania">Correo de la Compañía</label>
+                                <input type="email" class="form-control" id="correoCompania" placeholder="Ingrese correo de la compañía">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Paso 2: Información de Aeronaves -->
+            <div class="tab-pane fade" id="aeronaves" role="tabpanel" aria-labelledby="list-aeronaves-list">
+                <h5 class="mb-3 font-weight-bold">Información de las Aeronaves</h5>
+                <div style="max-height: 50vh; overflow-y: auto; padding-right: 10px;">
+
+                    <!-- Botones de acción -->
+                    <div class="mb-3 d-flex flex-wrap align-items-center">
+                        <button class="btn btn-success mr-2 mb-2" id="btnAgregarAeronave">
+                            <i class="fas fa-plus"></i> Agregar Aeronave
+                        </button>
+
+                        <button class="btn btn-primary mr-2 mb-2" id="btnCargarArchivo">
+                            <i class="fas fa-file-upload"></i> Cargar desde Archivo
+                        </button>
+
+                        <a href="@Url.Content("~/Content/documents/Formato_Aeronaves.xlsx")" download class="btn btn-outline-info mb-2">
+                            <i class="fas fa-download"></i> Descargar Formato Para Subir Aeronaves
+                        </a>
+                        <button class="btn btn-warning mr-2 mb-2" onclick="window.open('@Url.Content("~/Content/documents/Formato_Aeronaves.xlsx")', '_blank')">
+                            <i class="fas fa-info-circle"></i> Pasos para subir CSV
+                        </button>
+                        <input type="file" id="inputArchivo" accept=".csv" style="display: none;">
+                        <small class="text-muted mt-2 ml-1 d-block">
+                            <i class="fas fa-exclamation-circle text-warning"></i>
+                            Solo se permite subir archivos en formato <strong>.csv</strong> separados por punto y coma (<code>;</code>).
+                        </small>
+
+                    </div>
+
+                    <!-- Tabla de aeronaves -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover table-sm" id="tablaAeronaves" style="font-size: 13px;">
+                            <thead class="thead-light text-center">
+                                <tr>
+                                    <th>Fabricante</th>
+                                    <th>Modelo</th>
+                                    <th>Serie</th>
+                                    <th>Matrícula</th>
+                                    <th>Configuración</th>
+                                    <th>Etapa de Ruido</th>
+                                    <th>Peso</th>
+                                    <th>Designador OACI</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se agregarán las filas dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Contador de aeronaves -->
+                    <div class="form-group mt-3">
+                        <label for="contadorAeronaves">Resumen de Aeronaves (por Fabricante/Modelo)</label>
+                        <textarea class="form-control"
+                                  id="contadorAeronaves"
+                                  rows="3"
+                                  readonly
+                                  disabled
+                                  style="background-color: #f8f9fa; resize: none;"></textarea>
+                    </div>
+                    <!-- Botón Guardar Aeronaves -->
+                    <div class="text-right mt-4">
+                        <button type="button" class="btn btn-primary" id="btnGuardarListadoAeronaves">
+                            <i class="fas fa-save"></i> Guardar Aeronaves
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Paso 3: Operaciones -->
+            <div class="tab-pane fade" id="operaciones" role="tabpanel" aria-labelledby="list-operaciones-list">
+                <h5 class="mb-3 font-weight-bold">Operaciones en el Ecuador</h5>
+
+                <div class="form-group">
+                    <label for="fechaInicioOperaciones">Fecha propuesta de inicio de operaciones</label>
+                    <input type="date" class="form-control" id="fechaInicioOperaciones">
+                </div>
+
+                <div class="form-group">
+                    <label>Tipos de operación</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="opsRegulares">
+                        <label class="form-check-label" for="opsRegulares">Operaciones Regulares</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="opsNoRegulares">
+                        <label class="form-check-label" for="opsNoRegulares">Operaciones No Regulares</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="pasajeros">
+                        <label class="form-check-label" for="pasajeros">Pasajeros/Carga /Correo </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="carga">
+                        <label class="form-check-label" for="carga">Carga solamente</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="resumenOperaciones">Resumen de operaciones</label>
+                    <textarea class="form-control" id="resumenOperaciones" rows="3" placeholder="Describa el resumen de operaciones..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Aeropuertos dentro del Ecuador</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="quito">
+                        <label class="form-check-label" for="quito">Quito</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="guayaquil">
+                        <label class="form-check-label" for="guayaquil">Guayaquil</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="cuenca">
+                        <label class="form-check-label" for="cuenca">Cuenca</label>
+                    </div>
+                </div>
+
+                <!-- Nuevo bloque Interfronterizos -->
+                <div class="form-group mt-4">
+                    <h5 class="mb-2 font-weight-bold">Interfronterizos</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="activarInterfronterizos" onchange="document.getElementById('opcionesInterfronterizos').style.display = this.checked ? 'block' : 'none'">
+                        <label class="form-check-label" for="activarInterfronterizos">Seleccionar operaciones interfronterizas de ser el caso</label>
+                    </div>
+                    <div id="opcionesInterfronterizos" style="display:none; margin-top: 10px;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="interfronterizo1">
+                            <label class="form-check-label" for="interfronterizo1">Operación en frontera norte (Ejemplo: Tulcán)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="interfronterizo2">
+                            <label class="form-check-label" for="interfronterizo2">Operación en frontera sur (Ejemplo: Huaquillas)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="interfronterizo3">
+                            <label class="form-check-label" for="interfronterizo3">Operación en frontera este (Ejemplo: Lago Agrio)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Paso 4: Comprobante -->
+            <div class="tab-pane fade" id="comprobante" role="tabpanel" aria-labelledby="list-comprobante-list">
+                <h5 class="mb-3 font-weight-bold">Comprobante Requerido</h5>
+
+                <div class="alert alert-info" role="alert">
+                    Documentación a presentar. Tamaño máximo permitido: <strong>2 MB</strong> por archivo.<br>
+                    Formatos permitidos: <strong>PDF, JPG, PNG</strong>.
+                </div>
+
+                <div class="form-group">
+                    <label class="font-weight-bold">Copia de comprobante de pago *</label>
+
+                    <!-- Input de archivo con llamada a la función JS de vista previa -->
+                    <input type="file" class="form-control-file mb-2" id="archivoFacturaPago" accept=".pdf" required onchange="validarArchivo('archivoFacturaPago'); mostrarVistaPreviaArchivo('archivoFacturaPago', 'vistaPreviaFacturaPago')">
+
+                    <!-- Botón de visualizar archivo cargado -->
+                    <div class="mb-2" id="vistaPreviaFacturaPago" style="display:none;">
+                        <a href="#" class="btn btn-sm btn-outline-info" target="_blank">Visualizar archivo</a>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="chkFacturaPago" onchange="toggleCaptura('archivoFacturaPago', 'capturaFacturaPago', this)">
+                        <label class="form-check-label" for="chkFacturaPago">Supera el tamaño permitido</label>
+                    </div>
+
+                    <div id="capturaFacturaPago" style="display:none;">
+                        <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                    </div>
+
+                    <textarea class="form-control" id="conceptoFacturaPago" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoFacturaPago')"></textarea>
+                    <div class="text-danger small mt-1" id="alertaConceptoFacturaPago" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                </div>
+            </div>
+
+
+
+
+            <!-- Paso 5: Anexos -->
+            <div class="tab-pane fade" id="anexos" role="tabpanel" aria-labelledby="list-anexos-list">
+                <h5 class="mb-3 font-weight-bold">Anexos Requeridos</h5>
+                <div style="max-height: 50vh; overflow-y: auto; padding-right: 10px;">
+                    <form id="formAnexos">
+                        <!-- Bloque 1 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Copia de AOC válida *</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoAOC" accept=".pdf" required onchange="validarArchivo('archivoAOC')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkAOC" onchange="toggleCaptura('archivoAOC', 'capturaAOC', this)">
+                                <label class="form-check-label" for="chkAOC">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaAOC" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoAOC" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoAOC')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoAOC" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                        <hr>
+
+                        <!-- Bloque 2 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Copia de especificaciones de operaciones (OpSpecs) *</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoOpSpecs" accept=".pdf" required onchange="validarArchivo('archivoOpSpecs')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkOpSpecs" onchange="toggleCaptura('archivoOpSpecs', 'capturaOpSpecs', this)">
+                                <label class="form-check-label" for="chkOpSpecs">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaOpSpecs" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoOpSpecs" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoOpSpecs')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoOpSpecs" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                        <hr>
+
+                        <!-- Bloque 3 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Manual de operaciones *</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoManualOperaciones" accept=".pdf" required onchange="validarArchivo('archivoManualOperaciones')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkManualOperaciones" onchange="toggleCaptura('archivoManualOperaciones', 'capturaManualOperaciones', this)">
+                                <label class="form-check-label" for="chkManualOperaciones">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaManualOperaciones" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoManualOperaciones" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoManualOperaciones')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoManualOperaciones" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                        <hr>
+
+                        <!-- Bloque 4 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Carta de aprobación de la MEL *</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoMEL" accept=".pdf" required onchange="validarArchivo('archivoMEL')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkMEL" onchange="toggleCaptura('archivoMEL', 'capturaMEL', this)">
+                                <label class="form-check-label" for="chkMEL">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaMEL" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoMEL" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoMEL')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoMEL" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                        <hr>
+
+                        <!-- Bloque 5 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Permiso de operación Consejo Nacional de Aviación *</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoPermisoOperacion" accept=".pdf" required onchange="validarArchivo('archivoPermisoOperacion')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkPermisoOperacion" onchange="toggleCaptura('archivoPermisoOperacion', 'capturaPermisoOperacion', this)">
+                                <label class="form-check-label" for="chkPermisoOperacion">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaPermisoOperacion" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoPermisoOperacion" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoPermisoOperacion')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoPermisoOperacion" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                        <hr>
+
+                        <!-- Bloque 6 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Descripción del plan de seguridad *</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoPlanSeguridad" accept=".pdf" required onchange="validarArchivo('archivoPlanSeguridad')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkPlanSeguridad" onchange="toggleCaptura('archivoPlanSeguridad', 'capturaPlanSeguridad', this)">
+                                <label class="form-check-label" for="chkPlanSeguridad">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaPlanSeguridad" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoPlanSeguridad" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoPlanSeguridad')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoPlanSeguridad" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                        <hr>
+
+                        <!-- Bloque 7 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Certificado de ruido o documento equivalente *</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoCertificadoRuido" accept=".pdf" required onchange="validarArchivo('archivoCertificadoRuido')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkCertificadoRuido" onchange="toggleCaptura('archivoCertificadoRuido', 'capturaCertificadoRuido', this)">
+                                <label class="form-check-label" for="chkCertificadoRuido">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaCertificadoRuido" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoCertificadoRuido" rows="2" placeholder="Ingrese enlace o descripción..." required onblur="validarConcepto('conceptoCertificadoRuido')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoCertificadoRuido" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                        <!-- Bloque 8 -->
+                        <div class="form-group">
+                            <label class="font-weight-bold">Otros..</label>
+                            <input type="file" class="form-control-file mb-2" id="archivoOtro" accept=".pdf,.jpg,.jpeg,.png" onchange="validarArchivo('archivoOtro')">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkOtro" onchange="toggleCaptura('archivoOtro', 'capturaOtro', this)">
+                                <label class="form-check-label" for="chkOtro">Supera el tamaño permitido</label>
+                            </div>
+                            <div id="capturaOtro" style="display:none;">
+                                <input type="file" class="form-control-file mb-2" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <textarea class="form-control" id="conceptoOtro" rows="2" placeholder="Ingrese enlace o descripción..." onblur="validarConcepto('conceptoOtro')"></textarea>
+                            <div class="text-danger small mt-1" id="alertaConceptoOtro" style="display:none;">⚠️ Debe ingresar un enlace o descripción válida.</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="text-right mt-4">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary" type="button" onclick="guardarFormulario()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de Información de Compañía -->
+<div class="modal fade" id="modalInformacionCompania" tabindex="-1" role="dialog" aria-labelledby="modalInformacionCompaniaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalInformacionCompaniaLabel">Nueva Compañía / Operador - <i>New Company / Operator</i></h5>
+            </div>
+            <div class="modal-body">
+                <p>
+                    La Dirección General de Aviación Civil le informa que su Compañía no consta en nuestra base de datos.
+                    A fin de hacer su respectivo ingreso favor enviar su información de compañía a:
+                </p>
+                <p><b>uio.sobrevuelos@aviacioncivil.gob.ec</b> y <b>soporte.sobrevuelos@aviacioncivil.gob.ec</b></p>
+
+                <p><strong>Debe adjuntar los siguientes datos:</strong></p>
+                <ul>
+                    <li>Nombre de la Compañía</li>
+                    <li>Nombre Comercial</li>
+                    <li>Nombre y cargo del representante legal</li>
+                    <li>Código OACI (si aplica)</li>
+                    <li>País de Origen</li>
+                    <li>Ciudad donde se domicilia</li>
+                    <li>Dirección</li>
+                    <li>Teléfono</li>
+                    <li>Correo electrónico</li>
+                </ul>
+                <p>Recibirá respuesta una vez su solicitud haya sido procesada.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="$('#modalInformacionCompania').modal('hide')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Agregar Aeronave -->
+<div class="modal fade" id="modalAgregarAeronave" tabindex="-1" role="dialog" aria-labelledby="modalAgregarAeronaveLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalAgregarAeronaveLabel">Agregar Nueva Aeronave</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarAeronave">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="fabricante">Fabricante *</label>
+                            <input type="text" class="form-control" id="fabricante" placeholder="Ej: Boeing, Airbus">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="modelo">Modelo *</label>
+                            <input type="text" class="form-control" id="modelo" placeholder="Ej: 737, A320">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="serie">Serie *</label>
+                            <input type="text" class="form-control" id="serie" placeholder="Ingrese número de serie">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="matricula">Matrícula *</label>
+                            <input type="text" class="form-control" id="matricula" placeholder="Ingrese matrícula">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="designadorOASI">Designador OASI *</label>
+                            <input type="text" class="form-control text-uppercase" id="designadorOASI" maxlength="6" placeholder="Ej: AB1234">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="configuracion">Configuración *</label>
+                            <input type="text" class="form-control" id="configuracion" placeholder="Ej: Pasajeros, Carga">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="etapaRuido">Etapa de Ruido *</label>
+                            <input type="text" class="form-control" id="etapaRuido" placeholder="Ingrese etapa">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="peso">Peso (kg) *</label>
+                            <input type="number" class="form-control" id="peso" placeholder="Ej: 75000">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="$('#modalAgregarAeronave').modal('hide')">Cancelar</button>
+                <button type="button" class="btn btn-success" id="btnGuardarAeronave">Guardar Aeronave</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        // Función para actualizar el contador de aeronaves
+        function actualizarContador() {
+            let resumen = {};
+            $('#tablaAeronaves tbody tr').each(function () {
+                let fabricante = $(this).find('td').eq(0).text().trim();
+                let modelo = $(this).find('td').eq(1).text().trim();
+                let key = fabricante + ' - ' + modelo;
+
+                if (resumen[key]) {
+                    resumen[key]++;
+                } else {
+                    resumen[key] = 1;
+                }
+            });
+
+            let resumenTexto = '';
+            for (let key in resumen) {
+                resumenTexto += `${key}: ${resumen[key]} aeronave(s)\n`;
+            }
+
+            $('#contadorAeronaves').val(resumenTexto.trim());
+        }
+
+        // Inicializar contador vacío
+        $('#contadorAeronaves').val('');
+
+        // Abrir modal Información Compañía
+        $('#btnInformacionCompania').click(function (e) {
+            e.preventDefault();
+            $('#modalInformacionCompania').modal('show');
+        });
+
+        // Abrir modal Agregar Aeronave
+        $('#btnAgregarAeronave').click(function () {
+            $('#formAgregarAeronave')[0].reset();
+            $('#modalAgregarAeronave').modal('show');
+        });
+
+        // Guardar Aeronave desde el Modal
+        $('#btnGuardarAeronave').click(function () {
+            var fabricante = $('#fabricante').val();
+            var modelo = $('#modelo').val();
+            var serie = $('#serie').val();
+            var matricula = $('#matricula').val();
+            var configuracion = $('#configuracion').val();
+            var etapaRuido = $('#etapaRuido').val();
+            var peso = $('#peso').val();
+            var desigOASI = $('#designadorOASI').val();
+
+            // Validación básica
+            if (fabricante === '' || modelo === '' || serie === '' || matricula === '' || configuracion === '') {
+                alert('Por favor complete todos los campos obligatorios.');
+                return;
+            }
+
+            // Agregar nueva fila a la tabla
+            var nuevaFila = `
+                <tr>
+                    <td>${fabricante}</td>
+                    <td>${modelo}</td>
+                    <td>${serie}</td>
+                    <td>${matricula}</td>
+                    <td>${configuracion}</td>
+                    <td>${etapaRuido}</td>
+                    <td>${peso}</td>
+                    <td>${desigOASI}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm btnEliminarAeronave">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+            $('#tablaAeronaves tbody').append(nuevaFila);
+
+            $('#modalAgregarAeronave').modal('hide');
+            actualizarContador(); // Actualizar contador al agregar
+        });
+
+        // Delegado para eliminar aeronaves
+        $('#tablaAeronaves tbody').on('click', '.btnEliminarAeronave', function () {
+            $(this).closest('tr').remove();
+            actualizarContador(); // Actualizar contador al eliminar
+        });
+
+        // Click en botón cargar archivo
+        $('#btnCargarArchivo').click(function () {
+            $('#inputArchivo').click();
+        });
+
+        // Cuando el usuario seleccione un archivo
+        $('#inputArchivo').change(function (e) {
+            const archivo = e.target.files[0];
+            if (!archivo) return;
+
+            if (!archivo.name.endsWith('.csv')) {
+                alert('Por favor seleccione un archivo .csv válido.');
+                return;
+            }
+
+            const lector = new FileReader();
+
+            lector.onload = function (e) {
+                const contenido = e.target.result;
+                const lineas = contenido.trim().split('\n');
+
+                if (lineas.length < 2) {
+                    alert('El archivo CSV no contiene datos.');
+                    return;
+                }
+
+                // Detectar delimitador automáticamente
+                const delimitador = detectarDelimitador(lineas[0]);
+
+                // Limpiar tabla antes de cargar nuevas filas
+                $('#tablaAeronaves tbody').empty();
+
+                for (let i = 1; i < lineas.length; i++) {
+                    const fila = lineas[i].split(delimitador);
+
+                    if (fila.length !== 8) {
+                        alert(`Error en la fila ${i + 1}: Se esperaban 8 columnas pero se encontraron ${fila.length}.`);
+                        return; // Detiene la carga si hay un error
+                    }
+
+                    const nuevaFila = `
+                <tr>
+                    <td>${fila[0].trim()}</td>
+                    <td>${fila[1].trim()}</td>
+                    <td>${fila[2].trim()}</td>
+                    <td>${fila[3].trim()}</td>
+                    <td>${fila[4].trim()}</td>
+                    <td>${fila[5].trim()}</td>
+                    <td>${fila[6].trim()}</td>
+                    <td>${fila[7].trim()}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm btnEliminarAeronave">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+                    $('#tablaAeronaves tbody').append(nuevaFila);
+                }
+
+                actualizarContador();
+            };
+
+            lector.readAsText(archivo, 'UTF-8');
+        });
+        // Función genérica para guardar formularios (demo)
+        window.guardarFormulario = function () {
+            alert('Simulación: Formulario guardado.');
+        };
+    });
+    //Función que activa o desactiva el campo de captura de pantalla
+    function validarArchivo(idInput) {
+        const input = document.getElementById(idInput);
+        const archivo = input.files[0];
+
+        if (archivo) {
+            const tamañoMaximo = 2 * 1024 * 1024; // 2 MB en bytes
+            if (archivo.size > tamañoMaximo) {
+                alert('El archivo supera los 2MB permitidos. Por favor suba una captura si aplica.');
+                input.value = ''; // Vaciar el campo
+            }
+        }
+    }
+
+    function toggleCaptura(idArchivoPdf, idCapturaImagen, checkbox) {
+        const inputArchivo = document.getElementById(idArchivoPdf);
+        const divCaptura = document.getElementById(idCapturaImagen);
+
+        if (checkbox.checked) {
+            inputArchivo.value = ''; // Borra el archivo PDF
+            inputArchivo.disabled = true;
+            inputArchivo.required = false;
+            divCaptura.style.display = 'block';
+        } else {
+            inputArchivo.disabled = false;
+            inputArchivo.required = true;
+            divCaptura.style.display = 'none';
+        }
+    }
+
+    function validarConcepto(idTextarea) {
+        const textarea = document.getElementById(idTextarea);
+        const alerta = document.getElementById('alerta' + idTextarea.charAt(0).toUpperCase() + idTextarea.slice(1));
+
+        if (textarea.value.trim() === '') {
+            alerta.style.display = 'block';
+        } else {
+            alerta.style.display = 'none';
+        }
+    }
+
+    function detectarDelimitador(lineaCabecera) {
+        const cantidadPuntosComa = (lineaCabecera.match(/;/g) || []).length;
+        const cantidadComas = (lineaCabecera.match(/,/g) || []).length;
+        return cantidadPuntosComa >= cantidadComas ? ';' : ',';
+    }
+    //funcion para mostrar archivo subido
+    function mostrarVistaPreviaArchivo(inputId, vistaPreviaId) {
+        const input = document.getElementById(inputId);
+        const vistaPrevia = document.getElementById(vistaPreviaId);
+
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const url = URL.createObjectURL(file);
+            const enlace = vistaPrevia.querySelector('a');
+
+            enlace.href = url;
+            enlace.textContent = 'Visualizar archivo: ' + file.name;
+            vistaPrevia.style.display = 'block';
+        } else {
+            vistaPrevia.style.display = 'none';
+        }
+    }
+    //funcion para seleccionar compañias
+    const companias = new Set();
+
+    function agregarCompania() {
+        const select = document.getElementById('selectorCompanias');
+        const contenedor = document.getElementById('companiasSeleccionadas');
+        const seleccion = select.value;
+
+        if (!seleccion) {
+            alert('Por favor, seleccione una compañía.');
+            return;
+        }
+
+        if (companias.has(seleccion)) {
+            alert('La compañía ya ha sido agregada.');
+            return;
+        }
+
+        companias.add(seleccion);
+
+        // Crear la badge
+        const badge = document.createElement('span');
+        badge.className = 'badge badge-info mr-1';
+        badge.textContent = seleccion;
+        badge.style.cursor = 'pointer';
+        badge.title = "Haz click para eliminar";
+
+        badge.onclick = () => {
+            companias.delete(seleccion);
+            contenedor.removeChild(badge);
+        };
+
+        contenedor.appendChild(badge);
+
+        // Resetear selección
+        select.value = '';
+    }
+</script>
+

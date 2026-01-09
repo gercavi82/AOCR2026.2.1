@@ -1,0 +1,185 @@
+﻿
+@{
+    ViewBag.Title = "Modificar AOCR";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary">Modificar AOCR</h2>
+
+    <!-- Paso 1: Selección de Empresa -->
+    <div class="form-group mt-4">
+        <label for="empresaSelect"><strong>1. Selecciona la Empresa</strong></label>
+        <select class="form-control" id="empresaSelect">
+            <option value="">-- Seleccione Empresa --</option>
+            <!-- Se puede usar Razor para iterar empresas desde el backend -->
+            @*
+                @foreach (var empresa in ViewBag.Empresas) {
+                    <option value="@empresa.Id">@empresa.Nombre</option>
+                }
+            *@
+        </select>
+    </div>
+
+    <!-- Paso 2: Seleccionar AOCR a modificar -->
+    <div class="mt-4">
+        <label><strong>2. Selecciona la AOCR a Modificar</strong></label>
+        <button class="btn btn-outline-primary d-block mt-2" data-toggle="modal" data-target="#modalAOCR">Seleccionar AOCR</button>
+
+        <!-- Resultado de selección -->
+        <div id="aocrSeleccionada" class="mt-2 text-success font-weight-bold" style="display:none;">
+            AOCR Seleccionada: <span id="detalleAocrSeleccionada"></span>
+        </div>
+    </div>
+
+    <!-- Paso 3: Selección de Tipo de Modificación -->
+    <div class="form-group mt-4">
+        <label for="tipoModificacion"><strong>3. Tipo de Modificación</strong></label>
+        <select class="form-control" id="tipoModificacion">
+            <option value="">-- Seleccione tipo de modificación --</option>
+            <option value="explotador">Modificación de Explotador-Solicitante</option>
+            <option value="aeronaves">Modificación de Listado de Aeronaves</option>
+            <option value="operaciones">Modificación de Operaciones EAE</option>
+        </select>
+    </div>
+
+    <!-- Paso 4: Botón para continuar -->
+    <div class="text-right mt-4">
+        <button id="btnContinuar" class="btn btn-success">Continuar con Modificación</button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAOCR" tabindex="-1" role="dialog" aria-labelledby="modalAOCRLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Selecciona la AOCR</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover" id="tablaAOCR">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Tipo Solicitud</th>
+                            <th>Estado</th>
+                            <th>Registro AOCR</th>
+                            <th>Fecha de Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal: Modificar Explotador-Solicitante -->
+<div class="modal fade" id="modalModificarExplotador" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Modificar Explotador-Solicitante</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario -->
+                <div class="form-group">
+                    <label for="nombreEmpresa">Nombre de la Empresa</label>
+                    <input type="text" class="form-control" id="nombreEmpresa" placeholder="Ingrese el nombre" />
+                </div>
+                <div class="form-group">
+                    <label for="rucEmpresa">RUC</label>
+                    <input type="text" class="form-control" id="rucEmpresa" placeholder="Ingrese el RUC" />
+                </div>
+                <div class="form-group">
+                    <label for="representanteLegal">Representante Legal</label>
+                    <input type="text" class="form-control" id="representanteLegal" placeholder="Ingrese el representante" />
+                </div>
+                <div class="form-group">
+                    <label for="correoEmpresa">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="correoEmpresa" placeholder="ejemplo@empresa.com" />
+                </div>
+                <div class="form-group">
+                    <label for="telefonoEmpresa">Teléfono</label>
+                    <input type="text" class="form-control" id="telefonoEmpresa" placeholder="Ingrese número de contacto" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="confirmarGuardar('Explotador')">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalModificarAeronaves" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Modificar Listado de Aeronaves</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <!-- Campos ejemplo -->
+                <div class="form-group">
+                    <label>Matrícula</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Modelo</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Capacidad</label>
+                    <input type="number" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="confirmarGuardar('Aeronaves')">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalModificarOperaciones" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Modificar Operaciones EAE</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <!-- Campos ejemplo -->
+                <div class="form-group">
+                    <label>Tipo de Operación</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Área de Cobertura</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Frecuencia</label>
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="confirmarGuardar('Operaciones')">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/Views/Operador_Modificacion.js")"></script>
+}
+
+

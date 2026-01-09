@@ -1,0 +1,54 @@
+﻿@model CapaModelo.Certificado
+
+<h2>Certificado AOCR</h2>
+
+@if (Model == null)
+{
+    <div class="alert alert-info">
+        No existe certificado.
+        <a class="btn btn-success" href="@Url.Action("Generar", new { solicitudId = ViewBag.SolicitudId })">
+            Generar Certificado
+        </a>
+    </div>
+}
+else
+{
+    <table class="table table-bordered">
+        <tr><th>Número</th><td>@Model.NumeroCertificado</td></tr>
+        <tr><th>Emitido</th><td>@Model.FechaEmision</td></tr>
+        <tr><th>Vence</th><td>@Model.FechaVencimiento</td></tr>
+        <tr><th>Vigencia (años)</th><td>@Model.VigenciaAnios</td></tr>
+        <tr><th>Estado</th><td>@Model.Estado</td></tr>
+        <tr><th>Firmado Por</th><td>@Model.FirmadoPor</td></tr>
+        <tr><th>Condiciones</th><td>@Model.CondicionesEspeciales</td></tr>
+        <tr><th>Código Verificación</th><td>@Model.CodigoVerificacion</td></tr>
+        <tr>
+            <th>PDF</th>
+            <td>
+                @if (!string.IsNullOrEmpty(Model.RutaPdf))
+                {
+                    <a class="btn btn-primary" href="@Url.Action("DescargarPDF", new { id = Model.CodigoCertificado })">
+                        Descargar PDF
+                    </a>
+                }
+                else
+                {
+                    <span class="text-warning">No cargado</span>
+                }
+            </td>
+        </tr>
+    </table>
+
+    <hr />
+
+    <h4>Subir PDF</h4>
+    @using (Html.BeginForm("SubirPDF", "Certificado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.Hidden("id", Model.CodigoCertificado)
+        @Html.Hidden("solicitudId", Model.CodigoSolicitud)
+
+        <input type="file" name="archivo" class="form-control" />
+        <br />
+        <button class="btn btn-success">Subir</button>
+    }
+}

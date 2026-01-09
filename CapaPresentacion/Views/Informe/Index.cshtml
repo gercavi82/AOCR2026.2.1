@@ -1,0 +1,175 @@
+﻿@model List<CapaModelo.Informe>
+@using CapaModelo
+
+@{
+    ViewBag.Title = "Gestión de Informes";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="fas fa-file-alt"></i> Gestión de Informes</h2>
+            <p class="text-muted">Administración de informes generados</p>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="@Url.Action("Crear", "Informe")" class="btn btn-info btn-lg">
+                <i class="fas fa-plus"></i> Generar Informe
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="fas fa-list"></i> Lista de Informes</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <select class="form-control" id="filtroTipo">
+                        <option value="">Todos los tipos</option>
+                        <option value="Auditoria">Auditoría</option>
+                        <option value="Revision">Revisión</option>
+                        <option value="Evaluacion">Evaluación</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="filtroFechaInicio" placeholder="Fecha inicio">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="filtroFechaFin" placeholder="Fecha fin">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100" id="btnFiltrar">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="tablaInformes" class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Solicitud/Checklist</th>
+                            <th>Fecha Generación</th>
+                            <th>Generado Por</th>
+                            <th>Tipo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var informe in Model)
+                            {
+                                var id = informe.CodigoInforme;
+                                var titulo = informe.Titulo;
+                                var checklist = informe.CodigoSolicitud; // si luego creas ChecklistId, cámbialo aquí
+                                var fecha = informe.FechaInforme ?? informe.CreatedAt ?? DateTime.Now;
+                                var usuario = informe.CreatedBy;
+
+                                <tr>
+                                    <td>@id</td>
+                                    <td><strong>@titulo</strong></td>
+                                    <td>@checklist</td>
+                                    <td>@fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@(usuario.HasValue ? usuario.Value.ToString() : "-")</td>
+                                    <td>
+                                        <span class="badge badge-info">Auditoría</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="@Url.Action("Ver", "Informe", new { id = id })"
+                                               class="btn btn-sm btn-info" title="Ver Informe">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+
+                                            <a href="@Url.Action("DescargarPdf", "Informe", new { id = id })"
+                                               class="btn btn-sm btn-success" title="Descargar PDF">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+
+                                            <a href="@Url.Action("ExportarExcel", "Informe", new { id = id })"
+                                               class="btn btn-sm btn-primary" title="Exportar Excel">
+                                                <i class="fas fa-file-excel"></i>
+                                            </a>
+
+                                            <button type="button"
+                                                    class="btn btn-sm btn-danger btnEliminar"
+                                                    data-id="@id"
+                                                    title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">
+                                    No existen informes registrados.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#tablaInformes').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                },
+                order: [[0, 'desc']],
+                columnDefs: [
+                    { orderable: false, targets: 6 }
+                ]
+            });
+
+            // Eliminar informe
+            $(document).on('click', '.btnEliminar', function () {
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "Se eliminará el informe permanentemente",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '@Url.Action("Eliminar", "Informe")',
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (response) {
+                                if (response && response.success) {
+                                    Swal.fire('Eliminado', response.mensaje, 'success')
+                                        .then(() => location.reload());
+                                } else {
+                                    Swal.fire('Error', (response ? response.mensaje : 'Error desconocido'), 'error');
+                                }
+                            },
+                            error: function () {
+                                Swal.fire('Error', 'No se pudo eliminar el informe', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+}

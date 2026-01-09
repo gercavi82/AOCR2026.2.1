@@ -1,0 +1,200 @@
+﻿@model CapaModelo.SolicitudAOCR
+
+@{
+    ViewBag.Title = "Detalle de Solicitud AOCR";
+    Layout = "~/Views/Shared/_LayoutAOCR.cshtml";
+}
+
+<h2 class="mb-4">Detalle de Solicitud AOCR</h2>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">ID Solicitud</dt>
+            <dd class="col-sm-8">@Model.CodigoSolicitud</dd>
+
+            <dt class="col-sm-4">Fecha Solicitud</dt>
+            <dd class="col-sm-8">@Model.FechaSolicitud.ToString("yyyy-MM-dd HH:mm")</dd>
+
+            <dt class="col-sm-4">Estado</dt>
+            <dd class="col-sm-8">@Model.Estado</dd>
+
+            <dt class="col-sm-4">Operador</dt>
+            <dd class="col-sm-8">@Model.NombreOperador</dd>
+
+            <dt class="col-sm-4">RUC</dt>
+            <dd class="col-sm-8">@Model.Ruc</dd>
+
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+
+            <dt class="col-sm-4">Teléfono</dt>
+            <dd class="col-sm-8">@Model.Telefono</dd>
+
+            <dt class="col-sm-4">Dirección</dt>
+            <dd class="col-sm-8">@Model.Direccion, @Model.Ciudad – @Model.Provincia, @Model.Pais</dd>
+
+            <dt class="col-sm-4">Representante Legal</dt>
+            <dd class="col-sm-8">@Model.RepresentanteLegal (@Model.CedulaRepresentante)</dd>
+
+            <dt class="col-sm-4">Tipo de Operación</dt>
+            <dd class="col-sm-8">@Model.TipoOperacion</dd>
+
+            <dt class="col-sm-4">Descripción de Operación</dt>
+            <dd class="col-sm-8">@Model.DescripcionOperacion</dd>
+        </dl>
+
+        @if (User.IsInRole("Inspector"))
+        {
+            <hr class="my-4" />
+            <h5 class="mb-3">Gestión del Borrador AOCR</h5>
+            <div class="d-flex flex-column gap-2 mb-3">
+                <a href="@Url.Action("Subir", "Documento", new { solicitudId = Model.CodigoSolicitud })" class="btn btn-outline-primary">
+                    <i class="fas fa-upload"></i> Subir Borrador AOCR
+                </a>
+                <a href="@Url.Action("Lista", "Documento", new { solicitudId = Model.CodigoSolicitud })" class="btn btn-outline-secondary">
+                    <i class="fas fa-file-alt"></i> Ver Documentos de la Solicitud
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<hr />
+
+<div class="accordion mt-4" id="accordionHistorial">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingHistorial">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
+                Ver historial de cambios de estado
+            </button>
+        </h2>
+        <div id="collapseHistorial" class="accordion-collapse collapse" aria-labelledby="headingHistorial" data-bs-parent="#accordionHistorial">
+            <div class="accordion-body p-0">
+                @Html.Action("Ver", "Historial", new { id = Model.CodigoSolicitud })
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (User.IsInRole("Inspector") && Model.Estado == "ENVIADO_A_INSPECTOR")
+{
+    <hr class="my-4" />
+    <h5 class="mb-3">Revisión del Inspector</h5>
+    <div class="card border-info">
+        <div class="card-body bg-light">
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.CodigoSolicitud" />
+                <div class="mb-3">
+                    <label for="observacion" class="form-label">Observaciones (si aplica)</label>
+                    <textarea class="form-control" id="observacion" name="observacion" rows="3" placeholder="Ingrese observaciones si desea devolver la solicitud..."></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button formaction="@Url.Action("Aprobar", "SolicitudAOCR")" class="btn btn-success">
+                        <i class="fas fa-check"></i> Aprobar Solicitud
+                    </button>
+                    <button type="submit" formaction="@Url.Action("Observar", "SolicitudAOCR")" class="btn btn-danger">
+                        <i class="fas fa-exclamation-circle"></i> Observar Solicitud
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("JefaturaTecnica") && Model.Estado == "ENVIADO_A_JEFATURA")
+{
+    <hr class="my-4" />
+    <h5 class="mb-3">Validación Técnica (Jefatura)</h5>
+    <div class="card border-warning">
+        <div class="card-body bg-light">
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.CodigoSolicitud" />
+                <div class="mb-3">
+                    <label for="observacion" class="form-label">Observaciones (si aplica)</label>
+                    <textarea class="form-control" id="observacion" name="observacion" rows="3" placeholder="Observaciones técnicas si se rechaza..."></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button formaction="@Url.Action("ValidarTecnicamente", "SolicitudAOCR")" class="btn btn-success">
+                        <i class="fas fa-check"></i> Validar Certificado AOCR
+                    </button>
+                    <button type="submit" formaction="@Url.Action("RechazarTecnicamente", "SolicitudAOCR")" class="btn btn-danger">
+                        <i class="fas fa-times-circle"></i> Rechazar Solicitud
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("CoordinacionLegal") && Model.Estado == "ENVIADO_A_LEGALIZACION")
+{
+    <hr class="my-4" />
+    <h5 class="mb-3">Legalización (Coordinación Legal)</h5>
+    <div class="card border-primary mb-4">
+        <div class="card-body bg-light">
+            <form method="post" action="@Url.Action("Legalizar", "SolicitudAOCR")">
+                @Html.AntiForgeryToken()
+                @Html.Hidden("id", Model.CodigoSolicitud)
+                <div class="mb-3">
+                    <label for="observacionLegal" class="form-label">Observaciones de Legalización (opcional)</label>
+                    <textarea class="form-control" id="observacionLegal" name="observacionLegal" rows="3" placeholder="Ingrese observaciones si aplica..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check-circle"></i> Legalizar AOCR
+                </button>
+            </form>
+        </div>
+    </div>
+}
+
+@if (ViewBag.HistorialEstados != null)
+{
+    var historial = (List<CapaModelo.HistorialEstado>)ViewBag.HistorialEstados;
+    if (historial.Count > 0)
+    {
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">Historial de Cambios y Observaciones</div>
+            <div class="card-body p-0">
+                <table class="table table-bordered table-sm mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Estado Anterior</th>
+                            <th>Estado Nuevo</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in historial)
+                        {
+                        <tr>
+                            <td>
+                                @Convert.ToDateTime(item.FechaCambio).ToString("yyyy-MM-dd HH:mm")
+                            </td>
+
+                            <td>@item.EstadoAnterior</td>
+                            <td>@item.EstadoNuevo</td>
+                            <td>@item.Observaciones</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-light mt-3">No hay observaciones registradas.</div>
+    }
+}
+else
+{
+    <div class="alert alert-light mt-3">No hay historial registrado para esta solicitud.</div>
+}
+
+<div class="mt-4">
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary" })
+</div>

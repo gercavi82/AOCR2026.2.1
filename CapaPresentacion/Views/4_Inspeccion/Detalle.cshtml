@@ -1,0 +1,58 @@
+﻿@model CapaModelo.Inspeccion
+
+<h2>Detalle Inspección</h2>
+
+<table class="table table-bordered">
+    <tr><th>Solicitud</th><td>@Model.CodigoSolicitud</td></tr>
+    <tr><th>Inspector</th><td>@Model.Inspector</td></tr>
+    <tr><th>Fecha Programada</th><td>@Model.FechaProgramada</td></tr>
+    <tr><th>Estado</th><td>@Model.Estado</td></tr>
+</table>
+
+<h3>Informe</h3>
+
+@if (!string.IsNullOrEmpty(Model.InformeRuta))
+{
+    <p><a href="@Url.Content(Model.InformeRuta)" target="_blank">Ver Informe PDF</a></p>
+}
+
+<form method="post" enctype="multipart/form-data" action="@Url.Action("SubirInforme")">
+    @Html.Hidden("id", Model.CodigoInspeccion)
+    <input type="file" name="Informe" class="form-control" />
+    <button class="btn btn-primary mt-2">Subir Informe</button>
+</form>
+
+<hr />
+
+<h3>Hallazgos</h3>
+
+<a class="btn btn-warning" data-toggle="modal" data-target="#modalHallazgo">
+    Registrar Hallazgo
+</a>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Severidad</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var h in ViewBag.Hallazgos)
+        {
+            <tr>
+                <td>@h.Severidad</td>
+                <td>@h.Descripcion</td>
+                <td>@h.Estado</td>
+                <td>
+                    @if (h.Estado == "PENDIENTE")
+                    {
+                        <a class="btn btn-success btn-sm">Corregido</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

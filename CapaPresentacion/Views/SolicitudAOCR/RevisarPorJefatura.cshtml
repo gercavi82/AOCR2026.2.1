@@ -1,0 +1,34 @@
+﻿@model List<CapaModelo.SolicitudAOCR>
+
+@{
+    ViewBag.Title = "Validación por Jefatura Técnica";
+    Layout = "~/Views/Shared/_LayoutAOCR.cshtml";
+}
+
+<h3>Solicitudes pendientes de Validación Técnica</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Operador</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sol in Model)
+        {
+            <tr>
+                <td>@sol.CodigoSolicitud</td>
+                <td>@sol.NombreOperador</td>
+                <td>@sol.FechaSolicitud.ToString("yyyy-MM-dd")</td>
+                <td>@sol.Estado</td>
+                <td>
+                    @Html.ActionLink("Ver Detalle", "Detalle", "SolicitudAOCR", new { id = sol.CodigoSolicitud }, new { @class = "btn btn-info btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

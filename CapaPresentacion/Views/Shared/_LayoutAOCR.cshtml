@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="@Url.Content("~/Content/imganes/logo2.jpg")" />
+    <title>@ViewBag.Title - DGAC Sistema AOCR</title>
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/plugins-css")
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+
+    @* --- SOLUCIÓN AL ERROR --- *@
+    @* Esta línea permite que Index.cshtml inyecte sus estilos personalizados *@
+    @RenderSection("Styles", required: false)
+
+    <style>
+        :root {
+            --dgac-teal: #0C7C86;
+            --dgac-blue: #1B4F72;
+            --dgac-dark: #1f2937;
+            --dgac-gray: #f4f6f9;
+        }
+
+        body {
+            background-color: var(--dgac-gray);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
+        .main-sidebar {
+            background-color: var(--dgac-dark) !important;
+        }
+
+        .brand-link {
+            background-color: var(--dgac-blue) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+        }
+
+        .nav-link {
+            color: var(--dgac-blue) !important;
+            font-weight: 600;
+        }
+
+        /* Ajuste para el logo en el Hero */
+        .hero-logo {
+            max-height: 80px;
+            width: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Corrección de sintaxis para Razor en keyframes */
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed shadow-none">
+
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+        <div id="liveToast" class="toast" role="alert" aria-live="polite" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notificación</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
+
+    <div class="wrapper">
+        
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <span class="nav-link">Dirección General de Aviación Civil - Ecuador</span>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        @* Corregido: 'imganes' a 'images' *@
+                        <img src="@Url.Content("~/Content/imganes/user.png")" class="user-image img-circle elevation-1" alt="User">
+                        <span class="d-none d-md-inline">@Session["NombreUsuario"]</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right border-0 shadow">
+                        <li class="user-header bg-info">
+                            <p>
+                                @Session["NombreUsuario"]
+                                <small>Rol: @Session["Rol"]</small>
+                            </p>
+                        </li>
+                        <li class="user-footer">
+                            <a href="@Url.Action("Salir","Home")" class="btn btn-default btn-flat float-right text-danger">
+                                <i class="bi bi-box-arrow-right mr-2"></i>Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="@Url.Action("Index","Home")" class="brand-link">
+                @* Corregido: 'imganes' a 'images' *@
+                <img src="@Url.Content("~/Content/imganes/logo2.jpg")" class="brand-image img-circle elevation-3" style="opacity: .9" />
+                <span class="brand-text font-weight-light">DGAC - AOCR</span>
+            </a>
+            <div class="sidebar">
+                @Html.Partial("_SideBar")
+            </div>
+        </aside>
+
+        <div class="content-wrapper">
+            <div class="content pt-3 px-3">
+                @RenderBody()
+            </div>
+        </div>
+
+        <footer class="main-footer text-center">
+            <strong>&copy; @DateTime.Now.Year DGAC Ecuador · Sistema AOCR</strong>
+        </footer>
+    </div>
+
+    <div class="modal fade" id="modalFormulario" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title font-weight-bold"><i class="bi bi-file-earmark-medical mr-2"></i>Gestión AOCR</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body px-0" id="contenidoModal" style="min-height: 450px;"></div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Content/plugins-js")
+
+
+    <script>
+        window.cargarFormulario = function (idSolicitud) {
+            $('#modalFormulario').modal('show');
+            $('#contenidoModal').html(
+                `<div class="text-center p-5">
+                    <div class="spinner-border text-info"></div>
+                    <p class="mt-3">Cargando formulario...</p>
+                </div>`
+            );
+
+            $.ajax({
+                url: '@Url.Action("FormularioEmisionAOCR","SolicitudAOCR")',
+                data: { oid: idSolicitud },
+                type: "GET",
+                success: function (result) {
+                    $('#contenidoModal').html(result);
+                },
+                error: function () {
+                    $('#contenidoModal').html(
+                        '<div class="alert alert-danger m-3">Error al conectar con el servidor. Verifique la ruta del controlador.</div>'
+                    );
+                }
+            });
+        };
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var tipo = '@TempData["NotificacionTipo"]';
+        var mensaje = '@TempData["NotificacionMensaje"]';
+
+        if (mensaje) {
+            var toastEl = document.getElementById('liveToast');
+            toastEl.querySelector('.toast-body').textContent = mensaje;
+
+            // Opciones de color según tipo
+            if (tipo === "success") {
+                toastEl.classList.add('bg-success', 'text-white');
+            } else if (tipo === "warning") {
+                toastEl.classList.add('bg-warning', 'text-dark');
+            } else if (tipo === "danger") {
+                toastEl.classList.add('bg-danger', 'text-white');
+            }
+
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+    });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

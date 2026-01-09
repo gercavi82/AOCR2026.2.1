@@ -1,0 +1,18 @@
+﻿@model CapaModelo.Direccion
+@{
+    ViewBag.Title = "Detalle Dirección";
+}
+
+<h2 class="mt-3">📘 Detalle de Dirección</h2>
+
+<table class="table table-bordered">
+    <tr><th>ID</th><td>@Model.CodigoDireccion</td></tr>
+    <tr><th>Calle</th><td>@Model.Calle</td></tr>
+    <tr><th>Ciudad</th><td>@Model.Ciudad</td></tr>
+    <tr><th>Provincia</th><td>@Model.Provincia</td></tr>
+    <tr><th>País</th><td>@Model.Pais</td></tr>
+</table>
+
+<a href="@Url.Action("Index")" class="btn btn-secondary">Volver</a>
+<a href="@Url.Action("Editar", new { id = Model.CodigoDireccion })" class="btn btn-warning">Editar</a>
+<a href="@Url.Action("Eliminar", new { id = Model.CodigoDireccion })" class="btn btn-danger">Eliminar</a>

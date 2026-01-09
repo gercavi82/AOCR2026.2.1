@@ -1,0 +1,267 @@
+﻿@model CapaModelo.SolicitudAOCR
+
+@{
+    ViewBag.Title = "Verificar Documentación";
+}
+
+<h2><i class="glyphicon glyphicon-check"></i> Verificar Documentación - Matriz de Cumplimiento</h2>
+<hr />
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Información de la Solicitud</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Solicitud N°:</dt>
+            <dd>@Model.Id</dd>
+            <dt>Operador:</dt>
+            <dd>@Model.NombreOperador</dd>
+            <dt>RUC:</dt>
+            <dd>@Model.RUC</dd>
+            <dt>Tipo de Operación:</dt>
+            <dd>@Model.TipoOperacion</dd>
+        </dl>
+    </div>
+</div>
+
+@using (Html.BeginForm("VerificarDoc", "Tecnico", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Matriz de Cumplimiento Documental</h3>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-primary">
+                        <tr>
+                            <th style="width: 5%">#</th>
+                            <th style="width: 35%">Documento Requerido</th>
+                            <th style="width: 15%">Presentado</th>
+                            <th style="width: 15%">Cumple</th>
+                            <th style="width: 30%">Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Certificado de Matrícula</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_1" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_1" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_1" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Certificado de Aeronavegabilidad</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_2" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_2" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_2" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Póliza de Seguro Vigente</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_3" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_3" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_3" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Manual de Operaciones (MOP)</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_4" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_4" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_4" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Lista de Equipo Mínimo (MEL)</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_5" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_5" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_5" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>Programa de Mantenimiento</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_6" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_6" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_6" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>Licencias de Tripulación</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_7" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_7" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_7" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>Certificados Médicos Vigentes</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_8" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_8" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_8" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>Registros de Mantenimiento</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_9" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_9" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_9" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>Plan de Seguridad Operacional (SMS)</strong></td>
+                            <td class="text-center">
+                                <input type="checkbox" name="presentado_10" value="true" />
+                            </td>
+                            <td class="text-center">
+                                <select name="cumple_10" class="form-control input-sm">
+                                    <option value="">--</option>
+                                    <option value="SI">SÍ</option>
+                                    <option value="NO">NO</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="obs_10" class="form-control input-sm" placeholder="Observaciones..." />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Decisión Final</label>
+                <div class="col-md-9">
+                    <label class="radio-inline">
+                        <input type="radio" name="cumple" value="true" required />
+                        <span class="text-success"><strong>Documentación Completa</strong></span>
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="cumple" value="false" required />
+                        <span class="text-danger"><strong>Requiere Subsanación</strong></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Observaciones Generales</label>
+                <div class="col-md-9">
+                    <textarea name="observaciones" class="form-control" rows="5" placeholder="Ingrese observaciones generales sobre la documentación..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <button type="submit" class="btn btn-success btn-lg">
+                <i class="glyphicon glyphicon-ok"></i> Guardar Verificación
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-lg">
+                <i class="glyphicon glyphicon-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </div>
+}

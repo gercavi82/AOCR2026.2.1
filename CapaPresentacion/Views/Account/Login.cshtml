@@ -1,0 +1,328 @@
+﻿@model CapaPresentacion.Models.LoginViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Ingreso AOCR – DGAC";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="@Url.Content("~/Content/imganes/logo2.jpg")" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0C7C86, #1B4F72);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            color: #111;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+            background-color: #fff;
+            border: none;
+        }
+
+        .login-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #1B4F72;
+        }
+
+        .btn-primary-grad {
+            background: linear-gradient(135deg, #0C7C86 0%, #1B4F72 100%);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .btn-primary-grad:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(12,124,134,.4);
+                color: #fff;
+            }
+
+            .btn-primary-grad:disabled {
+                background: #ccc;
+                transform: none;
+                box-shadow: none;
+            }
+
+        .link-inline {
+            cursor: pointer;
+            text-decoration: none;
+            color: #1B4F72;
+            font-weight: 500;
+        }
+
+            .link-inline:hover {
+                text-decoration: underline;
+            }
+
+        .login-foot {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+
+        .is-invalid {
+            border-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="card login-card">
+            <div class="card-body p-4">
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger text-center py-2">
+                        @Html.ValidationSummary(false, "", new { @class = "small m-0" })
+                    </div>
+                }
+
+                <div class="text-center mb-3">
+                    <img src="@Url.Content("~/Content/imganes/logodgac.jpg")" alt="Logo DGAC" height="70" class="rounded">
+                </div>
+                <h5 class="text-center login-title mb-4">Acceso Sistema AOCR</h5>
+
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "loginForm" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label class="small font-weight-bold">Usuario o Correo</label>
+                        @Html.TextBoxFor(m => m.Usuario, new {
+                            @class = "form-control" + ((ViewData.ModelState["Usuario"] != null && ViewData.ModelState["Usuario"].Errors.Count > 0) ? " is-invalid" : ""),
+                            placeholder = "Ej: juan.perez",
+                            autocomplete = "username"
+                        })
+                        @Html.ValidationMessageFor(m => m.Usuario, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="form-group">
+                        <label class="small font-weight-bold">Contraseña</label>
+                        <div class="input-group">
+                            @Html.PasswordFor(m => m.Contrasena, new {
+                                @class = "form-control" + ((ViewData.ModelState["Contrasena"] != null && ViewData.ModelState["Contrasena"].Errors.Count > 0) ? " is-invalid" : ""),
+                                id = "clave",
+                                placeholder = "••••••••",
+                                autocomplete = "current-password"
+                            })
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                                    <i class="fa fa-eye" id="toggleIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Contrasena, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" />
+                        <label class="form-check-label small" for="termsCheck">
+                            He leído y acepto los <a class="link-inline" data-toggle="modal" data-target="#termsModal">Términos y Condiciones</a>
+                        </label>
+                    </div>
+
+                    <button class="btn btn-primary-grad btn-block py-2" type="submit" id="loginBtn" disabled>
+                        <i class="fa fa-sign-in-alt mr-1"></i> Ingresar al Sistema
+                    </button>
+                }
+
+                <hr>
+
+                <div class="text-center small">
+                    <a class="link-inline" data-toggle="modal" data-target="#modalRegistroUsuario">
+                        ¿No tienes cuenta? Regístrate
+                    </a>
+                </div>
+
+                <div class="text-center mt-2 small">
+                    <a class="link-inline text-muted" data-toggle="modal" data-target="#forgotPasswordModal">Olvidé mi contraseña</a>
+                </div>
+
+                <div class="text-center mt-2 small">
+                    <a class="link-inline text-muted" data-toggle="modal" data-target="#modalCuentasBancos">
+                        <i class="fa fa-university mr-1"></i> Cuentas Bancarias DGAC
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <p class="login-foot mt-4">
+            &copy; @DateTime.Now.Year Dirección General de Aviación Civil — Ecuador
+        </p>
+    </div>
+
+    @Html.Partial("_ModalRegistroUsuario")
+
+    <div class="modal fade" id="modalCuentasBancos" tabindex="-1" role="dialog" aria-labelledby="modalCuentasBancosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="modalCuentasBancosLabel">
+                        <i class="fa fa-university mr-2"></i> Cuentas Bancarias DGAC
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    @Html.Partial("_CuentasBancosPartial")
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    // 1. Cargar Roles desde PostgreSQL
+    function inicializarRolesDinamicos() {
+        const $select = $('#Rol');
+        if ($select.length && $select.children('option').length <= 1) {
+            $.ajax({
+                url: '@Url.Action("ObtenerRoles", "UsuarioRol")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $select.empty().append('<option value="">-- Seleccione un Rol --</option>');
+                    $.each(data, function (i, item) {
+                        $select.append($('<option>', { value: item.Value, text: item.Text }));
+                    });
+                }
+            });
+        }
+    }
+
+    // 2. Cargar Empresas desde AS/400 (IP 190.152.8.185)
+    function inicializarEmpresasAS400() {
+        const $selectEmp = $('#Empresa');
+        if ($selectEmp.length && $selectEmp.children('option').length <= 1) {
+            $.ajax({
+                url: '@Url.Action("ObtenerEmpresas", "Empresa")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $selectEmp.empty().append('<option value="">-- Seleccione una empresa --</option>');
+                    $.each(data, function (i, item) {
+                        // Usamos item.Codigo e item.Nombre que vienen del DAO de IBM
+                        $selectEmp.append($('<option>', { value: item.Codigo, text: item.Nombre }));
+                    });
+                },
+                error: function (xhr) {
+                    console.error("Error empresas AS400:", xhr.responseText);
+                }
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        // Mostrar modal de cuentas bancarias al iniciar
+        $('#modalCuentasBancos').modal('show');
+
+        // Control del botón de ingreso (términos y condiciones)
+        $('#termsCheck').on('change', function() {
+            $('#loginBtn').prop('disabled', !this.checked);
+        });
+
+        // ==========================================
+        // NUEVO: Lógica para mostrar "Otro Rol"
+        // ==========================================
+        $(document).on('change', '#Rol', function () {
+            var texto = $("#Rol option:selected").text().toUpperCase();
+            // Verificamos si contiene la palabra "OTRO"
+            if (texto.indexOf("OTRO") >= 0) {
+                $('#otroRolContainer').slideDown(); // Muestra el campo
+                $('#OtroRol').prop('required', true); // Lo hace obligatorio
+            } else {
+                $('#otroRolContainer').slideUp();   // Oculta el campo
+                $('#OtroRol').val('');              // Limpia el texto
+                $('#OtroRol').prop('required', false); // Quita la obligatoriedad
+            }
+        });
+    });
+
+    // Disparar las dos cargas cuando se abre el modal de registro
+    $('#modalRegistroUsuario').on('shown.bs.modal', function () {
+        inicializarRolesDinamicos(); // Habla con Postgres
+        inicializarEmpresasAS400();  // Habla con AS/400
+    });
+
+    // ==========================================
+    // CORREGIDO: Envío del formulario con ARCHIVOS (FormData)
+    // ==========================================
+    $('#crearForm').on('submit', function (e) {
+        e.preventDefault();
+
+        // IMPORTANTE: Usar FormData para enviar archivos (PDFs, imágenes)
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '@Url.Action("RegistrarUsuario", "Usuario")',
+            type: 'POST',
+            data: formData,
+            contentType: false, // Necesario para envío de archivos
+            processData: false, // Necesario para envío de archivos
+            success: function (res) {
+                alert(res.message);
+                if (res.success) {
+                    $('#modalRegistroUsuario').modal('hide');
+                    $('#crearForm')[0].reset();
+                    // Ocultamos el campo "Otro Rol" si quedó abierto
+                    $('#otroRolContainer').hide();
+                }
+            },
+            error: function(xhr) {
+                 console.error("Error en registro:", xhr.responseText);
+                 alert("Error de conexión al intentar registrar.");
+            }
+        });
+    });
+
+    function togglePassword() {
+        var input = document.getElementById('clave');
+        var icon = document.getElementById('toggleIcon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+    </script>
+
+</body>
+</html>

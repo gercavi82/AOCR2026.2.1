@@ -1,0 +1,30 @@
+﻿@{
+    var roles = Session["TodosLosRoles"] as List<string>;
+    // Usamos el operador seguro para evitar nulos
+    var rolActual = (Session["Rol"] != null) ? Session["Rol"].ToString() : "";
+}
+
+@if (roles != null && roles.Count > 1)
+{
+    <div class="px-3 mt-2">
+        <label class="text-light small mb-1">Cambiar de Rol:</label>
+
+        <select class="form-control form-control-sm"
+                onchange="location.href = this.value;"
+                style="background-color: #f8f9fa; color: #333; font-weight:bold;">
+
+            @foreach (var rol in roles)
+            {
+                // Generamos la URL para el controlador
+                var url = Url.Action("CambiarRol", "Account", new { rolSeleccionado = rol });
+
+                // Marcamos como 'selected' el rol que estás usando ahora
+                var estaSeleccionado = (rol == rolActual) ? "selected" : "";
+
+                <option value="@url" @estaSeleccionado>
+                    @rol
+                </option>
+            }
+        </select>
+    </div>
+}
